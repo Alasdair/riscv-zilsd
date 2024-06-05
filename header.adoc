@@ -27,15 +27,13 @@
 :sectnums:
 :toc: left
 :toclevels: 4
-:source-highlighter: pygments
-ifdef::backend-pdf[]
-:source-highlighter: coderay
-endif::[]
+:source-highlighter: rouge
 :data-uri:
 :hide-uri-scheme:
 :stem: latexmath
 :footnote:
 :xrefstyle: short
+:sail-doc: riscv_zilsd.json
 
 // Preamble
 [WARNING]

@@ -79,6 +79,10 @@ Zcmlsd adds the following RV32-only instructions:
 
 |===
 
+Operation::
++
+sail::execute[clause="C_LDSP(_,_)"]
+
 === Use of x0 as operand
 
 LD instructions with destination `x0` are processed as any other load, but the result is discarded entirely. Specifically, a load pair to `x0` does not cause `x1` to be written. For C.LDSP, usage of `x0` as the destination is reserved.

@@ -1,0 +1,3465 @@
+{
+  "version": 1,
+  "git": {
+    "commit": "8368b7e37f412d8270620dfed8f417e0539ca199",
+    "dirty": true
+  },
+  "embedding": "plain",
+  "hashes": {},
+  "functions": {
+    "execute": {
+      "function": [
+        {
+          "number": 0,
+          "source": "function clause execute C_NOP() = RETIRE_SUCCESS",
+          "pattern": {
+            "type": "app",
+            "id": "C_NOP",
+            "patterns": [ { "type": "literal", "value": "()" } ]
+          },
+          "body": "RETIRE_SUCCESS"
+        },
+        {
+          "number": 1,
+          "source": "function clause execute (C_ADDI4SPN(rdc, nzimm)) = {\n  let imm : bits(12) = (0b00 @ nzimm @ 0b00);\n  let rd = creg2reg_idx(rdc);\n  execute(ITYPE(imm, sp, rd, RISCV_ADDI))\n}",
+          "pattern": {
+            "type": "app",
+            "id": "C_ADDI4SPN",
+            "patterns": [
+              {
+                "type": "tuple",
+                "patterns": [
+                  { "type": "id", "id": "rdc" },
+                  { "type": "id", "id": "nzimm" }
+                ]
+              }
+            ]
+          },
+          "body": "  let imm : bits(12) = (0b00 @ nzimm @ 0b00);\n  let rd = creg2reg_idx(rdc);\n  execute(ITYPE(imm, sp, rd, RISCV_ADDI))"
+        },
+        {
+          "number": 2,
+          "source": "function clause execute (C_LW(uimm, rsc, rdc)) = {\n  let imm : bits(12) = zero_extend(uimm @ 0b00);\n  let rd = creg2reg_idx(rdc);\n  let rs = creg2reg_idx(rsc);\n  execute(LOAD(imm, rs, rd, false, WORD, false, false))\n}",
+          "pattern": {
+            "type": "app",
+            "id": "C_LW",
+            "patterns": [
+              {
+                "type": "tuple",
+                "patterns": [
+                  { "type": "id", "id": "uimm" },
+                  { "type": "id", "id": "rsc" },
+                  { "type": "id", "id": "rdc" }
+                ]
+              }
+            ]
+          },
+          "body": "  let imm : bits(12) = zero_extend(uimm @ 0b00);\n  let rd = creg2reg_idx(rdc);\n  let rs = creg2reg_idx(rsc);\n  execute(LOAD(imm, rs, rd, false, WORD, false, false))"
+        },
+        {
+          "number": 3,
+          "source": "function clause execute (C_LD(uimm, rsc, rdc)) = {\n  let imm : bits(12) = zero_extend(uimm @ 0b000);\n  let rd = creg2reg_idx(rdc);\n  let rs = creg2reg_idx(rsc);\n  execute(LOAD(imm, rs, rd, false, DOUBLE, false, false))\n}",
+          "pattern": {
+            "type": "app",
+            "id": "C_LD",
+            "patterns": [
+              {
+                "type": "tuple",
+                "patterns": [
+                  { "type": "id", "id": "uimm" },
+                  { "type": "id", "id": "rsc" },
+                  { "type": "id", "id": "rdc" }
+                ]
+              }
+            ]
+          },
+          "body": "  let imm : bits(12) = zero_extend(uimm @ 0b000);\n  let rd = creg2reg_idx(rdc);\n  let rs = creg2reg_idx(rsc);\n  execute(LOAD(imm, rs, rd, false, DOUBLE, false, false))"
+        },
+        {
+          "number": 4,
+          "source": "function clause execute (C_SW(uimm, rsc1, rsc2)) = {\n  let imm : bits(12) = zero_extend(uimm @ 0b00);\n  let rs1 = creg2reg_idx(rsc1);\n  let rs2 = creg2reg_idx(rsc2);\n  execute(STORE(imm, rs2, rs1, WORD, false, false))\n}",
+          "pattern": {
+            "type": "app",
+            "id": "C_SW",
+            "patterns": [
+              {
+                "type": "tuple",
+                "patterns": [
+                  { "type": "id", "id": "uimm" },
+                  { "type": "id", "id": "rsc1" },
+                  { "type": "id", "id": "rsc2" }
+                ]
+              }
+            ]
+          },
+          "body": "  let imm : bits(12) = zero_extend(uimm @ 0b00);\n  let rs1 = creg2reg_idx(rsc1);\n  let rs2 = creg2reg_idx(rsc2);\n  execute(STORE(imm, rs2, rs1, WORD, false, false))"
+        },
+        {
+          "number": 5,
+          "source": "function clause execute (C_SD(uimm, rsc1, rsc2)) = {\n  let imm : bits(12) = zero_extend(uimm @ 0b000);\n  let rs1 = creg2reg_idx(rsc1);\n  let rs2 = creg2reg_idx(rsc2);\n  execute(STORE(imm, rs2, rs1, DOUBLE, false, false))\n}",
+          "pattern": {
+            "type": "app",
+            "id": "C_SD",
+            "patterns": [
+              {
+                "type": "tuple",
+                "patterns": [
+                  { "type": "id", "id": "uimm" },
+                  { "type": "id", "id": "rsc1" },
+                  { "type": "id", "id": "rsc2" }
+                ]
+              }
+            ]
+          },
+          "body": "  let imm : bits(12) = zero_extend(uimm @ 0b000);\n  let rs1 = creg2reg_idx(rsc1);\n  let rs2 = creg2reg_idx(rsc2);\n  execute(STORE(imm, rs2, rs1, DOUBLE, false, false))"
+        },
+        {
+          "number": 6,
+          "source": "function clause execute (C_ADDI(nzi, rsd)) = {\n  let imm : bits(12) = sign_extend(nzi);\n  execute(ITYPE(imm, rsd, rsd, RISCV_ADDI))\n}",
+          "pattern": {
+            "type": "app",
+            "id": "C_ADDI",
+            "patterns": [
+              {
+                "type": "tuple",
+                "patterns": [
+                  { "type": "id", "id": "nzi" },
+                  { "type": "id", "id": "rsd" }
+                ]
+              }
+            ]
+          },
+          "body": "  let imm : bits(12) = sign_extend(nzi);\n  execute(ITYPE(imm, rsd, rsd, RISCV_ADDI))"
+        },
+        {
+          "number": 7,
+          "source": "function clause execute (C_JAL(imm)) =\n  execute(RISCV_JAL(sign_extend(imm @ 0b0), ra))",
+          "pattern": {
+            "type": "app",
+            "id": "C_JAL",
+            "patterns": [ { "type": "id", "id": "imm" } ]
+          },
+          "body": "execute(RISCV_JAL(sign_extend(imm @ 0b0), ra))"
+        },
+        {
+          "number": 8,
+          "source": "function clause execute (C_ADDIW(imm, rsd)) =\n  execute(ADDIW(sign_extend(imm), rsd, rsd))",
+          "pattern": {
+            "type": "app",
+            "id": "C_ADDIW",
+            "patterns": [
+              {
+                "type": "tuple",
+                "patterns": [
+                  { "type": "id", "id": "imm" },
+                  { "type": "id", "id": "rsd" }
+                ]
+              }
+            ]
+          },
+          "body": "execute(ADDIW(sign_extend(imm), rsd, rsd))"
+        },
+        {
+          "number": 9,
+          "source": "function clause execute (C_LI(imm, rd)) = {\n  let imm : bits(12) = sign_extend(imm);\n  execute(ITYPE(imm, zreg, rd, RISCV_ADDI))\n}",
+          "pattern": {
+            "type": "app",
+            "id": "C_LI",
+            "patterns": [
+              {
+                "type": "tuple",
+                "patterns": [
+                  { "type": "id", "id": "imm" }, { "type": "id", "id": "rd" }
+                ]
+              }
+            ]
+          },
+          "body": "  let imm : bits(12) = sign_extend(imm);\n  execute(ITYPE(imm, zreg, rd, RISCV_ADDI))"
+        },
+        {
+          "number": 10,
+          "source": "function clause execute (C_ADDI16SP(imm)) = {\n  let imm : bits(12) = sign_extend(imm @ 0x0);\n  execute(ITYPE(imm, sp, sp, RISCV_ADDI))\n}",
+          "pattern": {
+            "type": "app",
+            "id": "C_ADDI16SP",
+            "patterns": [ { "type": "id", "id": "imm" } ]
+          },
+          "body": "  let imm : bits(12) = sign_extend(imm @ 0x0);\n  execute(ITYPE(imm, sp, sp, RISCV_ADDI))"
+        },
+        {
+          "number": 11,
+          "source": "function clause execute (C_LUI(imm, rd)) = {\n  let res : bits(20) = sign_extend(imm);\n  execute(UTYPE(res, rd, RISCV_LUI))\n}",
+          "pattern": {
+            "type": "app",
+            "id": "C_LUI",
+            "patterns": [
+              {
+                "type": "tuple",
+                "patterns": [
+                  { "type": "id", "id": "imm" }, { "type": "id", "id": "rd" }
+                ]
+              }
+            ]
+          },
+          "body": "  let res : bits(20) = sign_extend(imm);\n  execute(UTYPE(res, rd, RISCV_LUI))"
+        },
+        {
+          "number": 12,
+          "source": "function clause execute (C_SRLI(shamt, rsd)) = {\n  let rsd = creg2reg_idx(rsd);\n  execute(SHIFTIOP(shamt, rsd, rsd, RISCV_SRLI))\n}",
+          "pattern": {
+            "type": "app",
+            "id": "C_SRLI",
+            "patterns": [
+              {
+                "type": "tuple",
+                "patterns": [
+                  { "type": "id", "id": "shamt" },
+                  { "type": "id", "id": "rsd" }
+                ]
+              }
+            ]
+          },
+          "body": "  let rsd = creg2reg_idx(rsd);\n  execute(SHIFTIOP(shamt, rsd, rsd, RISCV_SRLI))"
+        },
+        {
+          "number": 13,
+          "source": "function clause execute (C_SRAI(shamt, rsd)) = {\n  let rsd = creg2reg_idx(rsd);\n  execute(SHIFTIOP(shamt, rsd, rsd, RISCV_SRAI))\n}",
+          "pattern": {
+            "type": "app",
+            "id": "C_SRAI",
+            "patterns": [
+              {
+                "type": "tuple",
+                "patterns": [
+                  { "type": "id", "id": "shamt" },
+                  { "type": "id", "id": "rsd" }
+                ]
+              }
+            ]
+          },
+          "body": "  let rsd = creg2reg_idx(rsd);\n  execute(SHIFTIOP(shamt, rsd, rsd, RISCV_SRAI))"
+        },
+        {
+          "number": 14,
+          "source": "function clause execute (C_ANDI(imm, rsd)) = {\n  let rsd = creg2reg_idx(rsd);\n  execute(ITYPE(sign_extend(imm), rsd, rsd, RISCV_ANDI))\n}",
+          "pattern": {
+            "type": "app",
+            "id": "C_ANDI",
+            "patterns": [
+              {
+                "type": "tuple",
+                "patterns": [
+                  { "type": "id", "id": "imm" },
+                  { "type": "id", "id": "rsd" }
+                ]
+              }
+            ]
+          },
+          "body": "  let rsd = creg2reg_idx(rsd);\n  execute(ITYPE(sign_extend(imm), rsd, rsd, RISCV_ANDI))"
+        },
+        {
+          "number": 15,
+          "source": "function clause execute (C_SUB(rsd, rs2)) = {\n  let rsd = creg2reg_idx(rsd);\n  let rs2 = creg2reg_idx(rs2);\n  execute(RTYPE(rs2, rsd, rsd, RISCV_SUB))\n}",
+          "pattern": {
+            "type": "app",
+            "id": "C_SUB",
+            "patterns": [
+              {
+                "type": "tuple",
+                "patterns": [
+                  { "type": "id", "id": "rsd" },
+                  { "type": "id", "id": "rs2" }
+                ]
+              }
+            ]
+          },
+          "body": "  let rsd = creg2reg_idx(rsd);\n  let rs2 = creg2reg_idx(rs2);\n  execute(RTYPE(rs2, rsd, rsd, RISCV_SUB))"
+        },
+        {
+          "number": 16,
+          "source": "function clause execute (C_XOR(rsd, rs2)) = {\n  let rsd = creg2reg_idx(rsd);\n  let rs2 = creg2reg_idx(rs2);\n  execute(RTYPE(rs2, rsd, rsd, RISCV_XOR))\n}",
+          "pattern": {
+            "type": "app",
+            "id": "C_XOR",
+            "patterns": [
+              {
+                "type": "tuple",
+                "patterns": [
+                  { "type": "id", "id": "rsd" },
+                  { "type": "id", "id": "rs2" }
+                ]
+              }
+            ]
+          },
+          "body": "  let rsd = creg2reg_idx(rsd);\n  let rs2 = creg2reg_idx(rs2);\n  execute(RTYPE(rs2, rsd, rsd, RISCV_XOR))"
+        },
+        {
+          "number": 17,
+          "source": "function clause execute (C_OR(rsd, rs2)) = {\n  let rsd = creg2reg_idx(rsd);\n  let rs2 = creg2reg_idx(rs2);\n  execute(RTYPE(rs2, rsd, rsd, RISCV_OR))\n}",
+          "pattern": {
+            "type": "app",
+            "id": "C_OR",
+            "patterns": [
+              {
+                "type": "tuple",
+                "patterns": [
+                  { "type": "id", "id": "rsd" },
+                  { "type": "id", "id": "rs2" }
+                ]
+              }
+            ]
+          },
+          "body": "  let rsd = creg2reg_idx(rsd);\n  let rs2 = creg2reg_idx(rs2);\n  execute(RTYPE(rs2, rsd, rsd, RISCV_OR))"
+        },
+        {
+          "number": 18,
+          "source": "function clause execute (C_AND(rsd, rs2)) = {\n  let rsd = creg2reg_idx(rsd);\n  let rs2 = creg2reg_idx(rs2);\n  execute(RTYPE(rs2, rsd, rsd, RISCV_AND))\n}",
+          "pattern": {
+            "type": "app",
+            "id": "C_AND",
+            "patterns": [
+              {
+                "type": "tuple",
+                "patterns": [
+                  { "type": "id", "id": "rsd" },
+                  { "type": "id", "id": "rs2" }
+                ]
+              }
+            ]
+          },
+          "body": "  let rsd = creg2reg_idx(rsd);\n  let rs2 = creg2reg_idx(rs2);\n  execute(RTYPE(rs2, rsd, rsd, RISCV_AND))"
+        },
+        {
+          "number": 19,
+          "source": "function clause execute (C_SUBW(rsd, rs2)) = {\n  let rsd = creg2reg_idx(rsd);\n  let rs2 = creg2reg_idx(rs2);\n  execute(RTYPEW(rs2, rsd, rsd, RISCV_SUBW))\n}",
+          "pattern": {
+            "type": "app",
+            "id": "C_SUBW",
+            "patterns": [
+              {
+                "type": "tuple",
+                "patterns": [
+                  { "type": "id", "id": "rsd" },
+                  { "type": "id", "id": "rs2" }
+                ]
+              }
+            ]
+          },
+          "body": "  let rsd = creg2reg_idx(rsd);\n  let rs2 = creg2reg_idx(rs2);\n  execute(RTYPEW(rs2, rsd, rsd, RISCV_SUBW))"
+        },
+        {
+          "number": 20,
+          "source": "function clause execute (C_ADDW(rsd, rs2)) = {\n  let rsd = creg2reg_idx(rsd);\n  let rs2 = creg2reg_idx(rs2);\n  execute(RTYPEW(rs2, rsd, rsd, RISCV_ADDW))\n}",
+          "pattern": {
+            "type": "app",
+            "id": "C_ADDW",
+            "patterns": [
+              {
+                "type": "tuple",
+                "patterns": [
+                  { "type": "id", "id": "rsd" },
+                  { "type": "id", "id": "rs2" }
+                ]
+              }
+            ]
+          },
+          "body": "  let rsd = creg2reg_idx(rsd);\n  let rs2 = creg2reg_idx(rs2);\n  execute(RTYPEW(rs2, rsd, rsd, RISCV_ADDW))"
+        },
+        {
+          "number": 21,
+          "source": "function clause execute (C_J(imm)) =\n  execute(RISCV_JAL(sign_extend(imm @ 0b0), zreg))",
+          "pattern": {
+            "type": "app",
+            "id": "C_J",
+            "patterns": [ { "type": "id", "id": "imm" } ]
+          },
+          "body": "execute(RISCV_JAL(sign_extend(imm @ 0b0), zreg))"
+        },
+        {
+          "number": 22,
+          "source": "function clause execute (C_BEQZ(imm, rs)) =\n  execute(BTYPE(sign_extend(imm @ 0b0), zreg, creg2reg_idx(rs), RISCV_BEQ))",
+          "pattern": {
+            "type": "app",
+            "id": "C_BEQZ",
+            "patterns": [
+              {
+                "type": "tuple",
+                "patterns": [
+                  { "type": "id", "id": "imm" }, { "type": "id", "id": "rs" }
+                ]
+              }
+            ]
+          },
+          "body": "execute(BTYPE(sign_extend(imm @ 0b0), zreg, creg2reg_idx(rs), RISCV_BEQ))"
+        },
+        {
+          "number": 23,
+          "source": "function clause execute (C_BNEZ(imm, rs)) =\n  execute(BTYPE(sign_extend(imm @ 0b0), zreg, creg2reg_idx(rs), RISCV_BNE))",
+          "pattern": {
+            "type": "app",
+            "id": "C_BNEZ",
+            "patterns": [
+              {
+                "type": "tuple",
+                "patterns": [
+                  { "type": "id", "id": "imm" }, { "type": "id", "id": "rs" }
+                ]
+              }
+            ]
+          },
+          "body": "execute(BTYPE(sign_extend(imm @ 0b0), zreg, creg2reg_idx(rs), RISCV_BNE))"
+        },
+        {
+          "number": 24,
+          "source": "function clause execute (C_SLLI(shamt, rsd)) =\n  execute(SHIFTIOP(shamt, rsd, rsd, RISCV_SLLI))",
+          "pattern": {
+            "type": "app",
+            "id": "C_SLLI",
+            "patterns": [
+              {
+                "type": "tuple",
+                "patterns": [
+                  { "type": "id", "id": "shamt" },
+                  { "type": "id", "id": "rsd" }
+                ]
+              }
+            ]
+          },
+          "body": "execute(SHIFTIOP(shamt, rsd, rsd, RISCV_SLLI))"
+        },
+        {
+          "number": 25,
+          "source": "function clause execute (C_LWSP(uimm, rd)) = {\n  let imm : bits(12) = zero_extend(uimm @ 0b00);\n  execute(LOAD(imm, sp, rd, false, WORD, false, false))\n}",
+          "pattern": {
+            "type": "app",
+            "id": "C_LWSP",
+            "patterns": [
+              {
+                "type": "tuple",
+                "patterns": [
+                  { "type": "id", "id": "uimm" },
+                  { "type": "id", "id": "rd" }
+                ]
+              }
+            ]
+          },
+          "body": "  let imm : bits(12) = zero_extend(uimm @ 0b00);\n  execute(LOAD(imm, sp, rd, false, WORD, false, false))"
+        },
+        {
+          "number": 26,
+          "source": "function clause execute (C_LDSP(uimm, rd)) = {\n  let imm : bits(12) = zero_extend(uimm @ 0b000);\n  execute(LOAD(imm, sp, rd, false, DOUBLE, false, false))\n}",
+          "pattern": {
+            "type": "app",
+            "id": "C_LDSP",
+            "patterns": [
+              {
+                "type": "tuple",
+                "patterns": [
+                  { "type": "id", "id": "uimm" },
+                  { "type": "id", "id": "rd" }
+                ]
+              }
+            ]
+          },
+          "body": "  let imm : bits(12) = zero_extend(uimm @ 0b000);\n  execute(LOAD(imm, sp, rd, false, DOUBLE, false, false))"
+        },
+        {
+          "number": 27,
+          "source": "function clause execute (C_SWSP(uimm, rs2)) = {\n  let imm : bits(12) = zero_extend(uimm @ 0b00);\n  execute(STORE(imm, rs2, sp, WORD, false, false))\n}",
+          "pattern": {
+            "type": "app",
+            "id": "C_SWSP",
+            "patterns": [
+              {
+                "type": "tuple",
+                "patterns": [
+                  { "type": "id", "id": "uimm" },
+                  { "type": "id", "id": "rs2" }
+                ]
+              }
+            ]
+          },
+          "body": "  let imm : bits(12) = zero_extend(uimm @ 0b00);\n  execute(STORE(imm, rs2, sp, WORD, false, false))"
+        },
+        {
+          "number": 28,
+          "source": "function clause execute (C_SDSP(uimm, rs2)) = {\n  let imm : bits(12) = zero_extend(uimm @ 0b000);\n  execute(STORE(imm, rs2, sp, DOUBLE, false, false))\n}",
+          "pattern": {
+            "type": "app",
+            "id": "C_SDSP",
+            "patterns": [
+              {
+                "type": "tuple",
+                "patterns": [
+                  { "type": "id", "id": "uimm" },
+                  { "type": "id", "id": "rs2" }
+                ]
+              }
+            ]
+          },
+          "body": "  let imm : bits(12) = zero_extend(uimm @ 0b000);\n  execute(STORE(imm, rs2, sp, DOUBLE, false, false))"
+        },
+        {
+          "number": 29,
+          "source": "function clause execute (C_JR(rs1)) =\n  execute(RISCV_JALR(zero_extend(0b0), rs1, zreg))",
+          "pattern": {
+            "type": "app",
+            "id": "C_JR",
+            "patterns": [ { "type": "id", "id": "rs1" } ]
+          },
+          "body": "execute(RISCV_JALR(zero_extend(0b0), rs1, zreg))"
+        },
+        {
+          "number": 30,
+          "source": "function clause execute (C_JALR(rs1)) =\n  execute(RISCV_JALR(zero_extend(0b0), rs1, ra))",
+          "pattern": {
+            "type": "app",
+            "id": "C_JALR",
+            "patterns": [ { "type": "id", "id": "rs1" } ]
+          },
+          "body": "execute(RISCV_JALR(zero_extend(0b0), rs1, ra))"
+        },
+        {
+          "number": 31,
+          "source": "function clause execute (C_MV(rd, rs2)) =\n  execute(RTYPE(rs2, zreg, rd, RISCV_ADD))",
+          "pattern": {
+            "type": "app",
+            "id": "C_MV",
+            "patterns": [
+              {
+                "type": "tuple",
+                "patterns": [
+                  { "type": "id", "id": "rd" }, { "type": "id", "id": "rs2" }
+                ]
+              }
+            ]
+          },
+          "body": "execute(RTYPE(rs2, zreg, rd, RISCV_ADD))"
+        },
+        {
+          "number": 32,
+          "source": "function clause execute C_EBREAK() =\n  execute(EBREAK())",
+          "pattern": {
+            "type": "app",
+            "id": "C_EBREAK",
+            "patterns": [ { "type": "literal", "value": "()" } ]
+          },
+          "body": "execute(EBREAK())"
+        },
+        {
+          "number": 33,
+          "source": "function clause execute (C_ADD(rsd, rs2)) =\n  execute(RTYPE(rs2, rsd, rsd, RISCV_ADD))",
+          "pattern": {
+            "type": "app",
+            "id": "C_ADD",
+            "patterns": [
+              {
+                "type": "tuple",
+                "patterns": [
+                  { "type": "id", "id": "rsd" },
+                  { "type": "id", "id": "rs2" }
+                ]
+              }
+            ]
+          },
+          "body": "execute(RTYPE(rs2, rsd, rsd, RISCV_ADD))"
+        }
+      ],
+      "links": [
+        {
+          "type": "function",
+          "id": "execute",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 26585, 26592 ]
+        },
+        {
+          "type": "function",
+          "id": "RTYPE",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 26593, 26598 ]
+        },
+        {
+          "type": "function",
+          "id": "execute",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 26172, 26179 ]
+        },
+        {
+          "type": "function",
+          "id": "EBREAK",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 26180, 26186 ]
+        },
+        {
+          "type": "function",
+          "id": "execute",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 25721, 25728 ]
+        },
+        {
+          "type": "function",
+          "id": "RTYPE",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 25729, 25734 ]
+        },
+        {
+          "type": "function",
+          "id": "execute",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 25220, 25227 ]
+        },
+        {
+          "type": "function",
+          "id": "RISCV_JALR",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 25228, 25238 ]
+        },
+        {
+          "type": "function",
+          "id": "zero_extend",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 25239, 25250 ]
+        },
+        {
+          "type": "function",
+          "id": "execute",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 24761, 24768 ]
+        },
+        {
+          "type": "function",
+          "id": "RISCV_JALR",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 24769, 24779 ]
+        },
+        {
+          "type": "function",
+          "id": "zero_extend",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 24780, 24791 ]
+        },
+        {
+          "type": "function",
+          "id": "zero_extend",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 24194, 24205 ]
+        },
+        {
+          "type": "function",
+          "id": "execute",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 24223, 24230 ]
+        },
+        {
+          "type": "function",
+          "id": "STORE",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 24231, 24236 ]
+        },
+        {
+          "type": "function",
+          "id": "zero_extend",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 23597, 23608 ]
+        },
+        {
+          "type": "function",
+          "id": "execute",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 23625, 23632 ]
+        },
+        {
+          "type": "function",
+          "id": "STORE",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 23633, 23638 ]
+        },
+        {
+          "type": "function",
+          "id": "zero_extend",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 22964, 22975 ]
+        },
+        {
+          "type": "function",
+          "id": "execute",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 22993, 23000 ]
+        },
+        {
+          "type": "function",
+          "id": "LOAD",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 23001, 23005 ]
+        },
+        {
+          "type": "function",
+          "id": "zero_extend",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 22275, 22286 ]
+        },
+        {
+          "type": "function",
+          "id": "execute",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 22303, 22310 ]
+        },
+        {
+          "type": "function",
+          "id": "LOAD",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 22311, 22315 ]
+        },
+        {
+          "type": "function",
+          "id": "execute",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 21653, 21660 ]
+        },
+        {
+          "type": "function",
+          "id": "SHIFTIOP",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 21661, 21669 ]
+        },
+        {
+          "type": "function",
+          "id": "execute",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 20990, 20997 ]
+        },
+        {
+          "type": "function",
+          "id": "BTYPE",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 20998, 21003 ]
+        },
+        {
+          "type": "function",
+          "id": "creg2reg_idx",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 21034, 21046 ]
+        },
+        {
+          "type": "function",
+          "id": "sign_extend",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 21004, 21015 ]
+        },
+        {
+          "type": "function",
+          "id": "execute",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 20454, 20461 ]
+        },
+        {
+          "type": "function",
+          "id": "BTYPE",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 20462, 20467 ]
+        },
+        {
+          "type": "function",
+          "id": "creg2reg_idx",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 20498, 20510 ]
+        },
+        {
+          "type": "function",
+          "id": "sign_extend",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 20468, 20479 ]
+        },
+        {
+          "type": "function",
+          "id": "execute",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 19976, 19983 ]
+        },
+        {
+          "type": "function",
+          "id": "RISCV_JAL",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 19984, 19993 ]
+        },
+        {
+          "type": "function",
+          "id": "sign_extend",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 19994, 20005 ]
+        },
+        {
+          "type": "function",
+          "id": "creg2reg_idx",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 19338, 19350 ]
+        },
+        {
+          "type": "function",
+          "id": "creg2reg_idx",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 19369, 19381 ]
+        },
+        {
+          "type": "function",
+          "id": "execute",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 19390, 19397 ]
+        },
+        {
+          "type": "function",
+          "id": "RTYPEW",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 19398, 19404 ]
+        },
+        {
+          "type": "function",
+          "id": "creg2reg_idx",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 18715, 18727 ]
+        },
+        {
+          "type": "function",
+          "id": "creg2reg_idx",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 18746, 18758 ]
+        },
+        {
+          "type": "function",
+          "id": "execute",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 18767, 18774 ]
+        },
+        {
+          "type": "function",
+          "id": "RTYPEW",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 18775, 18781 ]
+        },
+        {
+          "type": "function",
+          "id": "creg2reg_idx",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 18152, 18164 ]
+        },
+        {
+          "type": "function",
+          "id": "creg2reg_idx",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 18183, 18195 ]
+        },
+        {
+          "type": "function",
+          "id": "execute",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 18204, 18211 ]
+        },
+        {
+          "type": "function",
+          "id": "RTYPE",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 18212, 18217 ]
+        },
+        {
+          "type": "function",
+          "id": "creg2reg_idx",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 17651, 17663 ]
+        },
+        {
+          "type": "function",
+          "id": "creg2reg_idx",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 17682, 17694 ]
+        },
+        {
+          "type": "function",
+          "id": "execute",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 17703, 17710 ]
+        },
+        {
+          "type": "function",
+          "id": "RTYPE",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 17711, 17716 ]
+        },
+        {
+          "type": "function",
+          "id": "creg2reg_idx",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 17150, 17162 ]
+        },
+        {
+          "type": "function",
+          "id": "creg2reg_idx",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 17181, 17193 ]
+        },
+        {
+          "type": "function",
+          "id": "execute",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 17202, 17209 ]
+        },
+        {
+          "type": "function",
+          "id": "RTYPE",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 17210, 17215 ]
+        },
+        {
+          "type": "function",
+          "id": "creg2reg_idx",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 16646, 16658 ]
+        },
+        {
+          "type": "function",
+          "id": "creg2reg_idx",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 16677, 16689 ]
+        },
+        {
+          "type": "function",
+          "id": "execute",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 16698, 16705 ]
+        },
+        {
+          "type": "function",
+          "id": "RTYPE",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 16706, 16711 ]
+        },
+        {
+          "type": "function",
+          "id": "creg2reg_idx",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 16156, 16168 ]
+        },
+        {
+          "type": "function",
+          "id": "execute",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 16177, 16184 ]
+        },
+        {
+          "type": "function",
+          "id": "ITYPE",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 16185, 16190 ]
+        },
+        {
+          "type": "function",
+          "id": "sign_extend",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 16191, 16202 ]
+        },
+        {
+          "type": "function",
+          "id": "creg2reg_idx",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 15606, 15618 ]
+        },
+        {
+          "type": "function",
+          "id": "execute",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 15627, 15634 ]
+        },
+        {
+          "type": "function",
+          "id": "SHIFTIOP",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 15635, 15643 ]
+        },
+        {
+          "type": "function",
+          "id": "creg2reg_idx",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 14970, 14982 ]
+        },
+        {
+          "type": "function",
+          "id": "execute",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 14991, 14998 ]
+        },
+        {
+          "type": "function",
+          "id": "SHIFTIOP",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 14999, 15007 ]
+        },
+        {
+          "type": "function",
+          "id": "sign_extend",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 14312, 14323 ]
+        },
+        {
+          "type": "function",
+          "id": "execute",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 14332, 14339 ]
+        },
+        {
+          "type": "function",
+          "id": "UTYPE",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 14340, 14345 ]
+        },
+        {
+          "type": "function",
+          "id": "sign_extend",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 13662, 13673 ]
+        },
+        {
+          "type": "function",
+          "id": "execute",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 13688, 13695 ]
+        },
+        {
+          "type": "function",
+          "id": "ITYPE",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 13696, 13701 ]
+        },
+        {
+          "type": "function",
+          "id": "sign_extend",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 12953, 12964 ]
+        },
+        {
+          "type": "function",
+          "id": "execute",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 12973, 12980 ]
+        },
+        {
+          "type": "function",
+          "id": "ITYPE",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 12981, 12986 ]
+        },
+        {
+          "type": "function",
+          "id": "execute",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 12390, 12397 ]
+        },
+        {
+          "type": "function",
+          "id": "ADDIW",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 12398, 12403 ]
+        },
+        {
+          "type": "function",
+          "id": "sign_extend",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 12404, 12415 ]
+        },
+        {
+          "type": "function",
+          "id": "execute",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 11816, 11823 ]
+        },
+        {
+          "type": "function",
+          "id": "RISCV_JAL",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 11824, 11833 ]
+        },
+        {
+          "type": "function",
+          "id": "sign_extend",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 11834, 11845 ]
+        },
+        {
+          "type": "function",
+          "id": "sign_extend",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 11127, 11138 ]
+        },
+        {
+          "type": "function",
+          "id": "execute",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 11147, 11154 ]
+        },
+        {
+          "type": "function",
+          "id": "ITYPE",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 11155, 11160 ]
+        },
+        {
+          "type": "function",
+          "id": "zero_extend",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 10324, 10335 ]
+        },
+        {
+          "type": "function",
+          "id": "creg2reg_idx",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 10363, 10375 ]
+        },
+        {
+          "type": "function",
+          "id": "creg2reg_idx",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 10395, 10407 ]
+        },
+        {
+          "type": "function",
+          "id": "execute",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 10417, 10424 ]
+        },
+        {
+          "type": "function",
+          "id": "STORE",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 10425, 10430 ]
+        },
+        {
+          "type": "function",
+          "id": "zero_extend",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 9589, 9600 ]
+        },
+        {
+          "type": "function",
+          "id": "creg2reg_idx",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 9627, 9639 ]
+        },
+        {
+          "type": "function",
+          "id": "creg2reg_idx",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 9659, 9671 ]
+        },
+        {
+          "type": "function",
+          "id": "execute",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 9681, 9688 ]
+        },
+        {
+          "type": "function",
+          "id": "STORE",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 9689, 9694 ]
+        },
+        {
+          "type": "function",
+          "id": "zero_extend",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 8836, 8847 ]
+        },
+        {
+          "type": "function",
+          "id": "creg2reg_idx",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 8874, 8886 ]
+        },
+        {
+          "type": "function",
+          "id": "creg2reg_idx",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 8904, 8916 ]
+        },
+        {
+          "type": "function",
+          "id": "execute",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 8925, 8932 ]
+        },
+        {
+          "type": "function",
+          "id": "LOAD",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 8933, 8937 ]
+        },
+        {
+          "type": "function",
+          "id": "zero_extend",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 8110, 8121 ]
+        },
+        {
+          "type": "function",
+          "id": "creg2reg_idx",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 8147, 8159 ]
+        },
+        {
+          "type": "function",
+          "id": "creg2reg_idx",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 8177, 8189 ]
+        },
+        {
+          "type": "function",
+          "id": "execute",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 8198, 8205 ]
+        },
+        {
+          "type": "function",
+          "id": "LOAD",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 8206, 8210 ]
+        },
+        {
+          "type": "function",
+          "id": "creg2reg_idx",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 7489, 7501 ]
+        },
+        {
+          "type": "function",
+          "id": "execute",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 7510, 7517 ]
+        },
+        {
+          "type": "function",
+          "id": "ITYPE",
+          "file": "model/riscv_insts_cext.sail",
+          "loc": [ 7518, 7523 ]
+        }
+      ]
+    }
+  },
+  "mappings": {
+    "assembly": {
+      "mapping": [
+        {
+          "number": 0,
+          "source": "mapping clause assembly = C_NOP() <-> \"c.nop\"",
+          "left": {
+            "type": "app",
+            "id": "C_NOP",
+            "patterns": [ { "type": "literal", "value": "()" } ]
+          },
+          "right": { "type": "literal", "value": "\"c.nop\"" }
+        },
+        {
+          "number": 1,
+          "source": "mapping clause assembly = C_ADDI4SPN(rdc, nzimm)\n      if nzimm != 0b00000000\n  <-> \"c.addi4spn\" ^ spc() ^ creg_name(rdc) ^ sep() ^ hex_bits_10(nzimm @ 0b00)\n      if nzimm != 0b00000000",
+          "left": {
+            "type": "app",
+            "id": "C_ADDI4SPN",
+            "patterns": [
+              { "type": "id", "id": "rdc" }, { "type": "id", "id": "nzimm" }
+            ]
+          },
+          "right": {
+            "type": "string_append",
+            "patterns": [
+              { "type": "literal", "value": "\"c.addi4spn\"" },
+              {
+                "type": "app",
+                "id": "spc",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "creg_name",
+                "patterns": [ { "type": "id", "id": "rdc" } ]
+              },
+              {
+                "type": "app",
+                "id": "sep",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "hex_bits_10",
+                "patterns": [
+                  {
+                    "type": "vector_concat",
+                    "patterns": [
+                      { "type": "id", "id": "nzimm" },
+                      { "type": "literal", "value": "0b00" }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "number": 2,
+          "source": "mapping clause assembly = C_LW(uimm, rsc, rdc)\n  <-> \"c.lw\" ^ spc() ^ creg_name(rdc) ^ sep() ^ creg_name(rsc) ^ sep() ^ hex_bits_7(uimm @ 0b00)",
+          "left": {
+            "type": "app",
+            "id": "C_LW",
+            "patterns": [
+              { "type": "id", "id": "uimm" },
+              { "type": "id", "id": "rsc" },
+              { "type": "id", "id": "rdc" }
+            ]
+          },
+          "right": {
+            "type": "string_append",
+            "patterns": [
+              { "type": "literal", "value": "\"c.lw\"" },
+              {
+                "type": "app",
+                "id": "spc",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "creg_name",
+                "patterns": [ { "type": "id", "id": "rdc" } ]
+              },
+              {
+                "type": "app",
+                "id": "sep",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "creg_name",
+                "patterns": [ { "type": "id", "id": "rsc" } ]
+              },
+              {
+                "type": "app",
+                "id": "sep",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "hex_bits_7",
+                "patterns": [
+                  {
+                    "type": "vector_concat",
+                    "patterns": [
+                      { "type": "id", "id": "uimm" },
+                      { "type": "literal", "value": "0b00" }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "number": 3,
+          "source": "mapping clause assembly = C_LD(uimm, rsc, rdc)\n      if sizeof(xlen) == 64 | haveZcmlsd()\n  <-> \"c.ld\" ^ spc() ^ creg_name(rdc) ^ sep() ^ creg_name(rsc) ^ sep() ^ hex_bits_8(uimm @ 0b000)\n      if sizeof(xlen) == 64 | haveZcmlsd()",
+          "left": {
+            "type": "app",
+            "id": "C_LD",
+            "patterns": [
+              { "type": "id", "id": "uimm" },
+              { "type": "id", "id": "rsc" },
+              { "type": "id", "id": "rdc" }
+            ]
+          },
+          "right": {
+            "type": "string_append",
+            "patterns": [
+              { "type": "literal", "value": "\"c.ld\"" },
+              {
+                "type": "app",
+                "id": "spc",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "creg_name",
+                "patterns": [ { "type": "id", "id": "rdc" } ]
+              },
+              {
+                "type": "app",
+                "id": "sep",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "creg_name",
+                "patterns": [ { "type": "id", "id": "rsc" } ]
+              },
+              {
+                "type": "app",
+                "id": "sep",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "hex_bits_8",
+                "patterns": [
+                  {
+                    "type": "vector_concat",
+                    "patterns": [
+                      { "type": "id", "id": "uimm" },
+                      { "type": "literal", "value": "0b000" }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "number": 4,
+          "source": "mapping clause assembly = C_SW(uimm, rsc1, rsc2)\n  <-> \"c.sw\" ^ spc() ^ creg_name(rsc1) ^ sep() ^ creg_name(rsc2) ^ sep() ^ hex_bits_7(uimm @ 0b00)",
+          "left": {
+            "type": "app",
+            "id": "C_SW",
+            "patterns": [
+              { "type": "id", "id": "uimm" },
+              { "type": "id", "id": "rsc1" },
+              { "type": "id", "id": "rsc2" }
+            ]
+          },
+          "right": {
+            "type": "string_append",
+            "patterns": [
+              { "type": "literal", "value": "\"c.sw\"" },
+              {
+                "type": "app",
+                "id": "spc",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "creg_name",
+                "patterns": [ { "type": "id", "id": "rsc1" } ]
+              },
+              {
+                "type": "app",
+                "id": "sep",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "creg_name",
+                "patterns": [ { "type": "id", "id": "rsc2" } ]
+              },
+              {
+                "type": "app",
+                "id": "sep",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "hex_bits_7",
+                "patterns": [
+                  {
+                    "type": "vector_concat",
+                    "patterns": [
+                      { "type": "id", "id": "uimm" },
+                      { "type": "literal", "value": "0b00" }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "number": 5,
+          "source": "mapping clause assembly = C_SD(uimm, rsc1, rsc2)\n      if sizeof(xlen) == 64 | haveZcmlsd() \n  <-> \"c.sd\" ^ spc() ^ creg_name(rsc1) ^ sep() ^ creg_name(rsc2) ^ sep() ^ hex_bits_8(uimm @ 0b000)\n      if sizeof(xlen) == 64 | haveZcmlsd()",
+          "left": {
+            "type": "app",
+            "id": "C_SD",
+            "patterns": [
+              { "type": "id", "id": "uimm" },
+              { "type": "id", "id": "rsc1" },
+              { "type": "id", "id": "rsc2" }
+            ]
+          },
+          "right": {
+            "type": "string_append",
+            "patterns": [
+              { "type": "literal", "value": "\"c.sd\"" },
+              {
+                "type": "app",
+                "id": "spc",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "creg_name",
+                "patterns": [ { "type": "id", "id": "rsc1" } ]
+              },
+              {
+                "type": "app",
+                "id": "sep",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "creg_name",
+                "patterns": [ { "type": "id", "id": "rsc2" } ]
+              },
+              {
+                "type": "app",
+                "id": "sep",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "hex_bits_8",
+                "patterns": [
+                  {
+                    "type": "vector_concat",
+                    "patterns": [
+                      { "type": "id", "id": "uimm" },
+                      { "type": "literal", "value": "0b000" }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "number": 6,
+          "source": "mapping clause assembly = C_ADDI(nzi, rsd)\n      if nzi != 0b000000 & rsd != zreg\n  <-> \"c.addi\" ^ spc() ^ reg_name(rsd) ^ sep() ^ hex_bits_6(nzi)\n      if nzi != 0b000000 & rsd != zreg",
+          "left": {
+            "type": "app",
+            "id": "C_ADDI",
+            "patterns": [
+              { "type": "id", "id": "nzi" }, { "type": "id", "id": "rsd" }
+            ]
+          },
+          "right": {
+            "type": "string_append",
+            "patterns": [
+              { "type": "literal", "value": "\"c.addi\"" },
+              {
+                "type": "app",
+                "id": "spc",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "reg_name",
+                "patterns": [ { "type": "id", "id": "rsd" } ]
+              },
+              {
+                "type": "app",
+                "id": "sep",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "hex_bits_6",
+                "patterns": [ { "type": "id", "id": "nzi" } ]
+              }
+            ]
+          }
+        },
+        {
+          "number": 7,
+          "source": "mapping clause assembly = C_JAL(imm)\n      if sizeof(xlen) == 32\n  <-> \"c.jal\" ^ spc() ^ hex_bits_12(imm @ 0b0)\n      if sizeof(xlen) == 32",
+          "left": {
+            "type": "app",
+            "id": "C_JAL",
+            "patterns": [ { "type": "id", "id": "imm" } ]
+          },
+          "right": {
+            "type": "string_append",
+            "patterns": [
+              { "type": "literal", "value": "\"c.jal\"" },
+              {
+                "type": "app",
+                "id": "spc",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "hex_bits_12",
+                "patterns": [
+                  {
+                    "type": "vector_concat",
+                    "patterns": [
+                      { "type": "id", "id": "imm" },
+                      { "type": "literal", "value": "0b0" }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "number": 8,
+          "source": "mapping clause assembly = C_ADDIW(imm, rsd)\n      if sizeof(xlen) == 64\n  <-> \"c.addiw\" ^ spc() ^ reg_name(rsd) ^ sep() ^ hex_bits_6(imm)\n      if sizeof(xlen) == 64",
+          "left": {
+            "type": "app",
+            "id": "C_ADDIW",
+            "patterns": [
+              { "type": "id", "id": "imm" }, { "type": "id", "id": "rsd" }
+            ]
+          },
+          "right": {
+            "type": "string_append",
+            "patterns": [
+              { "type": "literal", "value": "\"c.addiw\"" },
+              {
+                "type": "app",
+                "id": "spc",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "reg_name",
+                "patterns": [ { "type": "id", "id": "rsd" } ]
+              },
+              {
+                "type": "app",
+                "id": "sep",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "hex_bits_6",
+                "patterns": [ { "type": "id", "id": "imm" } ]
+              }
+            ]
+          }
+        },
+        {
+          "number": 9,
+          "source": "mapping clause assembly = C_LI(imm, rd)\n      if rd != zreg\n  <-> \"c.li\" ^ spc() ^ reg_name(rd) ^ sep() ^ hex_bits_6(imm)\n      if rd != zreg",
+          "left": {
+            "type": "app",
+            "id": "C_LI",
+            "patterns": [
+              { "type": "id", "id": "imm" }, { "type": "id", "id": "rd" }
+            ]
+          },
+          "right": {
+            "type": "string_append",
+            "patterns": [
+              { "type": "literal", "value": "\"c.li\"" },
+              {
+                "type": "app",
+                "id": "spc",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "reg_name",
+                "patterns": [ { "type": "id", "id": "rd" } ]
+              },
+              {
+                "type": "app",
+                "id": "sep",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "hex_bits_6",
+                "patterns": [ { "type": "id", "id": "imm" } ]
+              }
+            ]
+          }
+        },
+        {
+          "number": 10,
+          "source": "mapping clause assembly = C_ADDI16SP(imm)\n      if imm != 0b000000\n  <-> \"c.addi16sp\" ^ spc() ^ hex_bits_6(imm)\n      if imm != 0b000000",
+          "left": {
+            "type": "app",
+            "id": "C_ADDI16SP",
+            "patterns": [ { "type": "id", "id": "imm" } ]
+          },
+          "right": {
+            "type": "string_append",
+            "patterns": [
+              { "type": "literal", "value": "\"c.addi16sp\"" },
+              {
+                "type": "app",
+                "id": "spc",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "hex_bits_6",
+                "patterns": [ { "type": "id", "id": "imm" } ]
+              }
+            ]
+          }
+        },
+        {
+          "number": 11,
+          "source": "mapping clause assembly = C_LUI(imm, rd)\n      if rd != zreg & rd != sp & imm != 0b000000\n  <-> \"c.lui\" ^ spc() ^ reg_name(rd) ^ sep() ^ hex_bits_6(imm)\n      if rd != zreg & rd != sp & imm != 0b000000",
+          "left": {
+            "type": "app",
+            "id": "C_LUI",
+            "patterns": [
+              { "type": "id", "id": "imm" }, { "type": "id", "id": "rd" }
+            ]
+          },
+          "right": {
+            "type": "string_append",
+            "patterns": [
+              { "type": "literal", "value": "\"c.lui\"" },
+              {
+                "type": "app",
+                "id": "spc",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "reg_name",
+                "patterns": [ { "type": "id", "id": "rd" } ]
+              },
+              {
+                "type": "app",
+                "id": "sep",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "hex_bits_6",
+                "patterns": [ { "type": "id", "id": "imm" } ]
+              }
+            ]
+          }
+        },
+        {
+          "number": 12,
+          "source": "mapping clause assembly = C_SRLI(shamt, rsd)\n      if shamt != 0b000000\n  <-> \"c.srli\" ^ spc() ^ creg_name(rsd) ^ sep() ^ hex_bits_6(shamt)\n      if shamt != 0b000000",
+          "left": {
+            "type": "app",
+            "id": "C_SRLI",
+            "patterns": [
+              { "type": "id", "id": "shamt" }, { "type": "id", "id": "rsd" }
+            ]
+          },
+          "right": {
+            "type": "string_append",
+            "patterns": [
+              { "type": "literal", "value": "\"c.srli\"" },
+              {
+                "type": "app",
+                "id": "spc",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "creg_name",
+                "patterns": [ { "type": "id", "id": "rsd" } ]
+              },
+              {
+                "type": "app",
+                "id": "sep",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "hex_bits_6",
+                "patterns": [ { "type": "id", "id": "shamt" } ]
+              }
+            ]
+          }
+        },
+        {
+          "number": 13,
+          "source": "mapping clause assembly = C_SRAI(shamt, rsd)\n      if shamt != 0b000000\n  <-> \"c.srai\" ^ spc() ^ creg_name(rsd) ^ sep() ^ hex_bits_6(shamt)\n      if shamt != 0b000000",
+          "left": {
+            "type": "app",
+            "id": "C_SRAI",
+            "patterns": [
+              { "type": "id", "id": "shamt" }, { "type": "id", "id": "rsd" }
+            ]
+          },
+          "right": {
+            "type": "string_append",
+            "patterns": [
+              { "type": "literal", "value": "\"c.srai\"" },
+              {
+                "type": "app",
+                "id": "spc",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "creg_name",
+                "patterns": [ { "type": "id", "id": "rsd" } ]
+              },
+              {
+                "type": "app",
+                "id": "sep",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "hex_bits_6",
+                "patterns": [ { "type": "id", "id": "shamt" } ]
+              }
+            ]
+          }
+        },
+        {
+          "number": 14,
+          "source": "mapping clause assembly = C_ANDI(imm, rsd)\n  <-> \"c.andi\" ^ spc() ^ creg_name(rsd) ^ sep() ^ hex_bits_6(imm)",
+          "left": {
+            "type": "app",
+            "id": "C_ANDI",
+            "patterns": [
+              { "type": "id", "id": "imm" }, { "type": "id", "id": "rsd" }
+            ]
+          },
+          "right": {
+            "type": "string_append",
+            "patterns": [
+              { "type": "literal", "value": "\"c.andi\"" },
+              {
+                "type": "app",
+                "id": "spc",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "creg_name",
+                "patterns": [ { "type": "id", "id": "rsd" } ]
+              },
+              {
+                "type": "app",
+                "id": "sep",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "hex_bits_6",
+                "patterns": [ { "type": "id", "id": "imm" } ]
+              }
+            ]
+          }
+        },
+        {
+          "number": 15,
+          "source": "mapping clause assembly = C_SUB(rsd, rs2)\n  <-> \"c.sub\" ^ spc() ^ creg_name(rsd) ^ sep() ^ creg_name(rs2)",
+          "left": {
+            "type": "app",
+            "id": "C_SUB",
+            "patterns": [
+              { "type": "id", "id": "rsd" }, { "type": "id", "id": "rs2" }
+            ]
+          },
+          "right": {
+            "type": "string_append",
+            "patterns": [
+              { "type": "literal", "value": "\"c.sub\"" },
+              {
+                "type": "app",
+                "id": "spc",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "creg_name",
+                "patterns": [ { "type": "id", "id": "rsd" } ]
+              },
+              {
+                "type": "app",
+                "id": "sep",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "creg_name",
+                "patterns": [ { "type": "id", "id": "rs2" } ]
+              }
+            ]
+          }
+        },
+        {
+          "number": 16,
+          "source": "mapping clause assembly = C_XOR(rsd, rs2)\n  <-> \"c.xor\" ^ spc() ^ creg_name(rsd) ^ sep() ^ creg_name(rs2)",
+          "left": {
+            "type": "app",
+            "id": "C_XOR",
+            "patterns": [
+              { "type": "id", "id": "rsd" }, { "type": "id", "id": "rs2" }
+            ]
+          },
+          "right": {
+            "type": "string_append",
+            "patterns": [
+              { "type": "literal", "value": "\"c.xor\"" },
+              {
+                "type": "app",
+                "id": "spc",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "creg_name",
+                "patterns": [ { "type": "id", "id": "rsd" } ]
+              },
+              {
+                "type": "app",
+                "id": "sep",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "creg_name",
+                "patterns": [ { "type": "id", "id": "rs2" } ]
+              }
+            ]
+          }
+        },
+        {
+          "number": 17,
+          "source": "mapping clause assembly = C_OR(rsd, rs2)\n  <-> \"c.or\" ^ spc() ^ creg_name(rsd) ^ sep() ^ creg_name(rs2)",
+          "left": {
+            "type": "app",
+            "id": "C_OR",
+            "patterns": [
+              { "type": "id", "id": "rsd" }, { "type": "id", "id": "rs2" }
+            ]
+          },
+          "right": {
+            "type": "string_append",
+            "patterns": [
+              { "type": "literal", "value": "\"c.or\"" },
+              {
+                "type": "app",
+                "id": "spc",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "creg_name",
+                "patterns": [ { "type": "id", "id": "rsd" } ]
+              },
+              {
+                "type": "app",
+                "id": "sep",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "creg_name",
+                "patterns": [ { "type": "id", "id": "rs2" } ]
+              }
+            ]
+          }
+        },
+        {
+          "number": 18,
+          "source": "mapping clause assembly = C_AND(rsd, rs2)\n  <-> \"c.and\" ^ spc() ^ creg_name(rsd) ^ sep() ^ creg_name(rs2)",
+          "left": {
+            "type": "app",
+            "id": "C_AND",
+            "patterns": [
+              { "type": "id", "id": "rsd" }, { "type": "id", "id": "rs2" }
+            ]
+          },
+          "right": {
+            "type": "string_append",
+            "patterns": [
+              { "type": "literal", "value": "\"c.and\"" },
+              {
+                "type": "app",
+                "id": "spc",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "creg_name",
+                "patterns": [ { "type": "id", "id": "rsd" } ]
+              },
+              {
+                "type": "app",
+                "id": "sep",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "creg_name",
+                "patterns": [ { "type": "id", "id": "rs2" } ]
+              }
+            ]
+          }
+        },
+        {
+          "number": 19,
+          "source": "mapping clause assembly = C_SUBW(rsd, rs2)\n      if sizeof(xlen) == 64\n  <-> \"c.subw\" ^ spc() ^ creg_name(rsd) ^ sep() ^ creg_name(rs2)\n      if sizeof(xlen) == 64",
+          "left": {
+            "type": "app",
+            "id": "C_SUBW",
+            "patterns": [
+              { "type": "id", "id": "rsd" }, { "type": "id", "id": "rs2" }
+            ]
+          },
+          "right": {
+            "type": "string_append",
+            "patterns": [
+              { "type": "literal", "value": "\"c.subw\"" },
+              {
+                "type": "app",
+                "id": "spc",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "creg_name",
+                "patterns": [ { "type": "id", "id": "rsd" } ]
+              },
+              {
+                "type": "app",
+                "id": "sep",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "creg_name",
+                "patterns": [ { "type": "id", "id": "rs2" } ]
+              }
+            ]
+          }
+        },
+        {
+          "number": 20,
+          "source": "mapping clause assembly = C_ADDW(rsd, rs2)\n      if sizeof(xlen) == 64\n  <-> \"c.addw\" ^ spc() ^ creg_name(rsd) ^ sep() ^ creg_name(rs2)\n      if sizeof(xlen) == 64",
+          "left": {
+            "type": "app",
+            "id": "C_ADDW",
+            "patterns": [
+              { "type": "id", "id": "rsd" }, { "type": "id", "id": "rs2" }
+            ]
+          },
+          "right": {
+            "type": "string_append",
+            "patterns": [
+              { "type": "literal", "value": "\"c.addw\"" },
+              {
+                "type": "app",
+                "id": "spc",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "creg_name",
+                "patterns": [ { "type": "id", "id": "rsd" } ]
+              },
+              {
+                "type": "app",
+                "id": "sep",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "creg_name",
+                "patterns": [ { "type": "id", "id": "rs2" } ]
+              }
+            ]
+          }
+        },
+        {
+          "number": 21,
+          "source": "mapping clause assembly = C_J(imm)\n  <-> \"c.j\" ^ spc() ^ hex_bits_11(imm)",
+          "left": {
+            "type": "app",
+            "id": "C_J",
+            "patterns": [ { "type": "id", "id": "imm" } ]
+          },
+          "right": {
+            "type": "string_append",
+            "patterns": [
+              { "type": "literal", "value": "\"c.j\"" },
+              {
+                "type": "app",
+                "id": "spc",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "hex_bits_11",
+                "patterns": [ { "type": "id", "id": "imm" } ]
+              }
+            ]
+          }
+        },
+        {
+          "number": 22,
+          "source": "mapping clause assembly = C_BEQZ(imm, rs)\n  <-> \"c.beqz\" ^ spc() ^ creg_name(rs) ^ sep() ^ hex_bits_8(imm)",
+          "left": {
+            "type": "app",
+            "id": "C_BEQZ",
+            "patterns": [
+              { "type": "id", "id": "imm" }, { "type": "id", "id": "rs" }
+            ]
+          },
+          "right": {
+            "type": "string_append",
+            "patterns": [
+              { "type": "literal", "value": "\"c.beqz\"" },
+              {
+                "type": "app",
+                "id": "spc",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "creg_name",
+                "patterns": [ { "type": "id", "id": "rs" } ]
+              },
+              {
+                "type": "app",
+                "id": "sep",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "hex_bits_8",
+                "patterns": [ { "type": "id", "id": "imm" } ]
+              }
+            ]
+          }
+        },
+        {
+          "number": 23,
+          "source": "mapping clause assembly = C_BNEZ(imm, rs)\n  <-> \"c.bnez\" ^ spc() ^ creg_name(rs) ^ sep() ^ hex_bits_8(imm)",
+          "left": {
+            "type": "app",
+            "id": "C_BNEZ",
+            "patterns": [
+              { "type": "id", "id": "imm" }, { "type": "id", "id": "rs" }
+            ]
+          },
+          "right": {
+            "type": "string_append",
+            "patterns": [
+              { "type": "literal", "value": "\"c.bnez\"" },
+              {
+                "type": "app",
+                "id": "spc",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "creg_name",
+                "patterns": [ { "type": "id", "id": "rs" } ]
+              },
+              {
+                "type": "app",
+                "id": "sep",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "hex_bits_8",
+                "patterns": [ { "type": "id", "id": "imm" } ]
+              }
+            ]
+          }
+        },
+        {
+          "number": 24,
+          "source": "mapping clause assembly = C_SLLI(shamt, rsd)\n      if shamt != 0b000000 & rsd != zreg\n  <-> \"c.slli\" ^ spc() ^ reg_name(rsd) ^ sep() ^ hex_bits_6(shamt)\n      if shamt != 0b000000 & rsd != zreg",
+          "left": {
+            "type": "app",
+            "id": "C_SLLI",
+            "patterns": [
+              { "type": "id", "id": "shamt" }, { "type": "id", "id": "rsd" }
+            ]
+          },
+          "right": {
+            "type": "string_append",
+            "patterns": [
+              { "type": "literal", "value": "\"c.slli\"" },
+              {
+                "type": "app",
+                "id": "spc",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "reg_name",
+                "patterns": [ { "type": "id", "id": "rsd" } ]
+              },
+              {
+                "type": "app",
+                "id": "sep",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "hex_bits_6",
+                "patterns": [ { "type": "id", "id": "shamt" } ]
+              }
+            ]
+          }
+        },
+        {
+          "number": 25,
+          "source": "mapping clause assembly = C_LWSP(uimm, rd)\n      if rd != zreg\n  <-> \"c.lwsp\" ^ spc() ^ reg_name(rd) ^ sep() ^ hex_bits_6(uimm)\n      if rd != zreg",
+          "left": {
+            "type": "app",
+            "id": "C_LWSP",
+            "patterns": [
+              { "type": "id", "id": "uimm" }, { "type": "id", "id": "rd" }
+            ]
+          },
+          "right": {
+            "type": "string_append",
+            "patterns": [
+              { "type": "literal", "value": "\"c.lwsp\"" },
+              {
+                "type": "app",
+                "id": "spc",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "reg_name",
+                "patterns": [ { "type": "id", "id": "rd" } ]
+              },
+              {
+                "type": "app",
+                "id": "sep",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "hex_bits_6",
+                "patterns": [ { "type": "id", "id": "uimm" } ]
+              }
+            ]
+          }
+        },
+        {
+          "number": 26,
+          "source": "mapping clause assembly = C_LDSP(uimm, rd)\n      if rd != zreg & (sizeof(xlen) == 64 | haveZcmlsd())\n  <-> \"c.ldsp\" ^ spc() ^ reg_name(rd) ^ sep() ^ hex_bits_6(uimm)\n      if rd != zreg & (sizeof(xlen) == 64 | haveZcmlsd())",
+          "left": {
+            "type": "app",
+            "id": "C_LDSP",
+            "patterns": [
+              { "type": "id", "id": "uimm" }, { "type": "id", "id": "rd" }
+            ]
+          },
+          "right": {
+            "type": "string_append",
+            "patterns": [
+              { "type": "literal", "value": "\"c.ldsp\"" },
+              {
+                "type": "app",
+                "id": "spc",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "reg_name",
+                "patterns": [ { "type": "id", "id": "rd" } ]
+              },
+              {
+                "type": "app",
+                "id": "sep",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "hex_bits_6",
+                "patterns": [ { "type": "id", "id": "uimm" } ]
+              }
+            ]
+          }
+        },
+        {
+          "number": 27,
+          "source": "mapping clause assembly = C_SWSP(uimm, rs2)\n  <-> \"c.swsp\" ^ spc() ^ reg_name(rs2) ^ sep() ^ hex_bits_6(uimm)",
+          "left": {
+            "type": "app",
+            "id": "C_SWSP",
+            "patterns": [
+              { "type": "id", "id": "uimm" }, { "type": "id", "id": "rs2" }
+            ]
+          },
+          "right": {
+            "type": "string_append",
+            "patterns": [
+              { "type": "literal", "value": "\"c.swsp\"" },
+              {
+                "type": "app",
+                "id": "spc",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "reg_name",
+                "patterns": [ { "type": "id", "id": "rs2" } ]
+              },
+              {
+                "type": "app",
+                "id": "sep",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "hex_bits_6",
+                "patterns": [ { "type": "id", "id": "uimm" } ]
+              }
+            ]
+          }
+        },
+        {
+          "number": 28,
+          "source": "mapping clause assembly = C_SDSP(uimm, rs2)\n      if sizeof(xlen) == 64 | haveZcmlsd()\n  <-> \"c.sdsp\" ^ spc() ^ reg_name(rs2) ^ sep() ^ hex_bits_6(uimm)\n      if sizeof(xlen) == 64 | haveZcmlsd()",
+          "left": {
+            "type": "app",
+            "id": "C_SDSP",
+            "patterns": [
+              { "type": "id", "id": "uimm" }, { "type": "id", "id": "rs2" }
+            ]
+          },
+          "right": {
+            "type": "string_append",
+            "patterns": [
+              { "type": "literal", "value": "\"c.sdsp\"" },
+              {
+                "type": "app",
+                "id": "spc",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "reg_name",
+                "patterns": [ { "type": "id", "id": "rs2" } ]
+              },
+              {
+                "type": "app",
+                "id": "sep",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "hex_bits_6",
+                "patterns": [ { "type": "id", "id": "uimm" } ]
+              }
+            ]
+          }
+        },
+        {
+          "number": 29,
+          "source": "mapping clause assembly = C_JR(rs1)\n      if rs1 != zreg\n  <-> \"c.jr\" ^ spc() ^ reg_name(rs1)\n      if rs1 != zreg",
+          "left": {
+            "type": "app",
+            "id": "C_JR",
+            "patterns": [ { "type": "id", "id": "rs1" } ]
+          },
+          "right": {
+            "type": "string_append",
+            "patterns": [
+              { "type": "literal", "value": "\"c.jr\"" },
+              {
+                "type": "app",
+                "id": "spc",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "reg_name",
+                "patterns": [ { "type": "id", "id": "rs1" } ]
+              }
+            ]
+          }
+        },
+        {
+          "number": 30,
+          "source": "mapping clause assembly = C_JALR(rs1)\n      if rs1 != zreg\n  <-> \"c.jalr\" ^ spc() ^ reg_name(rs1)\n      if rs1 != zreg",
+          "left": {
+            "type": "app",
+            "id": "C_JALR",
+            "patterns": [ { "type": "id", "id": "rs1" } ]
+          },
+          "right": {
+            "type": "string_append",
+            "patterns": [
+              { "type": "literal", "value": "\"c.jalr\"" },
+              {
+                "type": "app",
+                "id": "spc",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "reg_name",
+                "patterns": [ { "type": "id", "id": "rs1" } ]
+              }
+            ]
+          }
+        },
+        {
+          "number": 31,
+          "source": "mapping clause assembly = C_MV(rd, rs2)\n      if rd != zreg & rs2 != zreg\n  <-> \"c.mv\" ^ spc() ^ reg_name(rd) ^ sep() ^ reg_name(rs2)\n      if rd != zreg & rs2 != zreg",
+          "left": {
+            "type": "app",
+            "id": "C_MV",
+            "patterns": [
+              { "type": "id", "id": "rd" }, { "type": "id", "id": "rs2" }
+            ]
+          },
+          "right": {
+            "type": "string_append",
+            "patterns": [
+              { "type": "literal", "value": "\"c.mv\"" },
+              {
+                "type": "app",
+                "id": "spc",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "reg_name",
+                "patterns": [ { "type": "id", "id": "rd" } ]
+              },
+              {
+                "type": "app",
+                "id": "sep",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "reg_name",
+                "patterns": [ { "type": "id", "id": "rs2" } ]
+              }
+            ]
+          }
+        },
+        {
+          "number": 32,
+          "source": "mapping clause assembly = C_EBREAK() <-> \"c.ebreak\"",
+          "left": {
+            "type": "app",
+            "id": "C_EBREAK",
+            "patterns": [ { "type": "literal", "value": "()" } ]
+          },
+          "right": { "type": "literal", "value": "\"c.ebreak\"" }
+        },
+        {
+          "number": 33,
+          "source": "mapping clause assembly = C_ADD(rsd, rs2)\n      if rsd != zreg & rs2 != zreg\n  <-> \"c.add\" ^ spc() ^ reg_name(rsd) ^ sep() ^ reg_name(rs2)\n      if rsd != zreg & rs2 != zreg",
+          "left": {
+            "type": "app",
+            "id": "C_ADD",
+            "patterns": [
+              { "type": "id", "id": "rsd" }, { "type": "id", "id": "rs2" }
+            ]
+          },
+          "right": {
+            "type": "string_append",
+            "patterns": [
+              { "type": "literal", "value": "\"c.add\"" },
+              {
+                "type": "app",
+                "id": "spc",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "reg_name",
+                "patterns": [ { "type": "id", "id": "rsd" } ]
+              },
+              {
+                "type": "app",
+                "id": "sep",
+                "patterns": [ { "type": "literal", "value": "()" } ]
+              },
+              {
+                "type": "app",
+                "id": "reg_name",
+                "patterns": [ { "type": "id", "id": "rs2" } ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "encdec_compressed": {
+      "mapping": [
+        {
+          "number": 0,
+          "source": "mapping clause encdec_compressed = C_NOP()\n  <-> 0b000 @ 0b0 @ 0b00000 @ 0b00000 @ 0b01",
+          "left": {
+            "type": "app",
+            "id": "C_NOP",
+            "patterns": [ { "type": "literal", "value": "()" } ]
+          },
+          "right": {
+            "type": "vector_concat",
+            "patterns": [
+              { "type": "literal", "value": "0b000" },
+              { "type": "literal", "value": "0b0" },
+              { "type": "literal", "value": "0b00000" },
+              { "type": "literal", "value": "0b00000" },
+              { "type": "literal", "value": "0b01" }
+            ]
+          },
+          "right_wavedrom": "{reg:[\n    { bits: 2, name: 0x1, attr: '2', type: 8 },\n    { bits: 5, name: 0x00, attr: '5', type: 8 },\n    { bits: 5, name: 0x00, attr: '5', type: 8 },\n    { bits: 1, name: 0x0, attr: '1', type: 8 },\n    { bits: 3, name: 0x0, attr: '3', type: 8 }\n]}"
+        },
+        {
+          "number": 1,
+          "source": "mapping clause encdec_compressed = C_ADDI4SPN(rd, nz96 @ nz54 @ nz3 @ nz2)\n      if nz96 @ nz54 @ nz3 @ nz2 != 0b00000000\n  <-> 0b000 @ nz54 : bits(2) @ nz96 : bits(4) @ nz2 : bits(1) @ nz3 : bits(1) @ rd : cregidx @ 0b00\n      if nz96 @ nz54 @ nz3 @ nz2 != 0b00000000",
+          "left": {
+            "type": "app",
+            "id": "C_ADDI4SPN",
+            "patterns": [
+              { "type": "id", "id": "rd" },
+              {
+                "type": "vector_concat",
+                "patterns": [
+                  { "type": "id", "id": "nz96" },
+                  { "type": "id", "id": "nz54" },
+                  { "type": "id", "id": "nz3" },
+                  { "type": "id", "id": "nz2" }
+                ]
+              }
+            ]
+          },
+          "right": {
+            "type": "vector_concat",
+            "patterns": [
+              { "type": "literal", "value": "0b000" },
+              { "type": "id", "id": "nz54" },
+              { "type": "id", "id": "nz96" },
+              { "type": "id", "id": "nz2" },
+              { "type": "id", "id": "nz3" },
+              { "type": "id", "id": "rd" },
+              { "type": "literal", "value": "0b00" }
+            ]
+          },
+          "right_wavedrom": "{reg:[\n    { bits: 2, name: 0x0, attr: '2', type: 8 },\n    { bits: 3, name: 'rd', attr: '3', type: 2 },\n    { bits: 1, name: 'nz3', attr: '1', type: 2 },\n    { bits: 1, name: 'nz2', attr: '1', type: 2 },\n    { bits: 4, name: 'nz96', attr: '4', type: 2 },\n    { bits: 2, name: 'nz54', attr: '2', type: 2 },\n    { bits: 3, name: 0x0, attr: '3', type: 8 }\n]}"
+        },
+        {
+          "number": 2,
+          "source": "mapping clause encdec_compressed = C_LW(ui6 @ ui53 @ ui2, rs1, rd)\n  <-> 0b010 @ ui53 : bits(3) @ rs1 : cregidx @ ui2 : bits(1) @ ui6 : bits(1) @ rd : cregidx @ 0b00",
+          "left": {
+            "type": "app",
+            "id": "C_LW",
+            "patterns": [
+              {
+                "type": "vector_concat",
+                "patterns": [
+                  { "type": "id", "id": "ui6" },
+                  { "type": "id", "id": "ui53" },
+                  { "type": "id", "id": "ui2" }
+                ]
+              },
+              { "type": "id", "id": "rs1" },
+              { "type": "id", "id": "rd" }
+            ]
+          },
+          "right": {
+            "type": "vector_concat",
+            "patterns": [
+              { "type": "literal", "value": "0b010" },
+              { "type": "id", "id": "ui53" },
+              { "type": "id", "id": "rs1" },
+              { "type": "id", "id": "ui2" },
+              { "type": "id", "id": "ui6" },
+              { "type": "id", "id": "rd" },
+              { "type": "literal", "value": "0b00" }
+            ]
+          },
+          "right_wavedrom": "{reg:[\n    { bits: 2, name: 0x0, attr: '2', type: 8 },\n    { bits: 3, name: 'rd', attr: '3', type: 2 },\n    { bits: 1, name: 'ui6', attr: '1', type: 2 },\n    { bits: 1, name: 'ui2', attr: '1', type: 2 },\n    { bits: 3, name: 'rs1', attr: '3', type: 2 },\n    { bits: 3, name: 'ui53', attr: '3', type: 2 },\n    { bits: 3, name: 0x2, attr: '3', type: 8 }\n]}"
+        },
+        {
+          "number": 3,
+          "source": "mapping clause encdec_compressed = C_LD(ui76 @ ui53, rs1, rd)\n      if sizeof(xlen) == 64 | haveZcmlsd() \n  <-> 0b011 @ ui53 : bits(3) @ rs1 : cregidx @ ui76 : bits(2) @ rd : cregidx @ 0b00\n      if sizeof(xlen) == 64 | haveZcmlsd()",
+          "left": {
+            "type": "app",
+            "id": "C_LD",
+            "patterns": [
+              {
+                "type": "vector_concat",
+                "patterns": [
+                  { "type": "id", "id": "ui76" },
+                  { "type": "id", "id": "ui53" }
+                ]
+              },
+              { "type": "id", "id": "rs1" },
+              { "type": "id", "id": "rd" }
+            ]
+          },
+          "right": {
+            "type": "vector_concat",
+            "patterns": [
+              { "type": "literal", "value": "0b011" },
+              { "type": "id", "id": "ui53" },
+              { "type": "id", "id": "rs1" },
+              { "type": "id", "id": "ui76" },
+              { "type": "id", "id": "rd" },
+              { "type": "literal", "value": "0b00" }
+            ]
+          },
+          "right_wavedrom": "{reg:[\n    { bits: 2, name: 0x0, attr: '2', type: 8 },\n    { bits: 3, name: 'rd', attr: '3', type: 2 },\n    { bits: 2, name: 'ui76', attr: '2', type: 2 },\n    { bits: 3, name: 'rs1', attr: '3', type: 2 },\n    { bits: 3, name: 'ui53', attr: '3', type: 2 },\n    { bits: 3, name: 0x3, attr: '3', type: 8 }\n]}"
+        },
+        {
+          "number": 4,
+          "source": "mapping clause encdec_compressed = C_SW(ui6 @ ui53 @ ui2, rs1, rs2)\n  <-> 0b110 @ ui53 : bits(3) @ rs1 : cregidx @ ui2 : bits(1) @ ui6 : bits(1) @ rs2 : cregidx @ 0b00",
+          "left": {
+            "type": "app",
+            "id": "C_SW",
+            "patterns": [
+              {
+                "type": "vector_concat",
+                "patterns": [
+                  { "type": "id", "id": "ui6" },
+                  { "type": "id", "id": "ui53" },
+                  { "type": "id", "id": "ui2" }
+                ]
+              },
+              { "type": "id", "id": "rs1" },
+              { "type": "id", "id": "rs2" }
+            ]
+          },
+          "right": {
+            "type": "vector_concat",
+            "patterns": [
+              { "type": "literal", "value": "0b110" },
+              { "type": "id", "id": "ui53" },
+              { "type": "id", "id": "rs1" },
+              { "type": "id", "id": "ui2" },
+              { "type": "id", "id": "ui6" },
+              { "type": "id", "id": "rs2" },
+              { "type": "literal", "value": "0b00" }
+            ]
+          },
+          "right_wavedrom": "{reg:[\n    { bits: 2, name: 0x0, attr: '2', type: 8 },\n    { bits: 3, name: 'rs2', attr: '3', type: 2 },\n    { bits: 1, name: 'ui6', attr: '1', type: 2 },\n    { bits: 1, name: 'ui2', attr: '1', type: 2 },\n    { bits: 3, name: 'rs1', attr: '3', type: 2 },\n    { bits: 3, name: 'ui53', attr: '3', type: 2 },\n    { bits: 3, name: 0x6, attr: '3', type: 8 }\n]}"
+        },
+        {
+          "number": 5,
+          "source": "mapping clause encdec_compressed = C_SD(ui76 @ ui53, rs1, rs2)\n      if sizeof(xlen) == 64 | haveZcmlsd() \n  <-> 0b111 @ ui53 : bits(3) @ rs1 : bits(3) @ ui76 : bits(2) @ rs2 : bits(3) @ 0b00\n      if sizeof(xlen) == 64 | haveZcmlsd()",
+          "left": {
+            "type": "app",
+            "id": "C_SD",
+            "patterns": [
+              {
+                "type": "vector_concat",
+                "patterns": [
+                  { "type": "id", "id": "ui76" },
+                  { "type": "id", "id": "ui53" }
+                ]
+              },
+              { "type": "id", "id": "rs1" },
+              { "type": "id", "id": "rs2" }
+            ]
+          },
+          "right": {
+            "type": "vector_concat",
+            "patterns": [
+              { "type": "literal", "value": "0b111" },
+              { "type": "id", "id": "ui53" },
+              { "type": "id", "id": "rs1" },
+              { "type": "id", "id": "ui76" },
+              { "type": "id", "id": "rs2" },
+              { "type": "literal", "value": "0b00" }
+            ]
+          },
+          "right_wavedrom": "{reg:[\n    { bits: 2, name: 0x0, attr: '2', type: 8 },\n    { bits: 3, name: 'rs2', attr: '3', type: 2 },\n    { bits: 2, name: 'ui76', attr: '2', type: 2 },\n    { bits: 3, name: 'rs1', attr: '3', type: 2 },\n    { bits: 3, name: 'ui53', attr: '3', type: 2 },\n    { bits: 3, name: 0x7, attr: '3', type: 8 }\n]}"
+        },
+        {
+          "number": 6,
+          "source": "mapping clause encdec_compressed = C_ADDI(nzi5 @ nzi40, rsd)\n      if nzi5 @ nzi40 != 0b000000 & rsd != zreg\n  <-> 0b000 @ nzi5 : bits(1) @ rsd : regidx @ nzi40 : bits(5) @ 0b01\n      if nzi5 @ nzi40 != 0b000000 & rsd != zreg",
+          "left": {
+            "type": "app",
+            "id": "C_ADDI",
+            "patterns": [
+              {
+                "type": "vector_concat",
+                "patterns": [
+                  { "type": "id", "id": "nzi5" },
+                  { "type": "id", "id": "nzi40" }
+                ]
+              },
+              { "type": "id", "id": "rsd" }
+            ]
+          },
+          "right": {
+            "type": "vector_concat",
+            "patterns": [
+              { "type": "literal", "value": "0b000" },
+              { "type": "id", "id": "nzi5" },
+              { "type": "id", "id": "rsd" },
+              { "type": "id", "id": "nzi40" },
+              { "type": "literal", "value": "0b01" }
+            ]
+          },
+          "right_wavedrom": "{reg:[\n    { bits: 2, name: 0x1, attr: '2', type: 8 },\n    { bits: 5, name: 'nzi40', attr: '5', type: 2 },\n    { bits: 5, name: 'rsd', attr: '5', type: 2 },\n    { bits: 1, name: 'nzi5', attr: '1', type: 2 },\n    { bits: 3, name: 0x0, attr: '3', type: 8 }\n]}"
+        },
+        {
+          "number": 7,
+          "source": "mapping clause encdec_compressed = C_JAL(i11 @ i10 @ i98 @ i7 @ i6 @ i5 @ i4 @ i31)\n      if sizeof(xlen) == 32\n  <-> 0b001 @ i11 : bits(1) @ i4 : bits(1) @ i98 : bits(2) @ i10 : bits(1) @ i6 : bits(1) @ i7 : bits(1) @ i31 : bits(3) @ i5 : bits(1) @ 0b01\n      if sizeof(xlen) == 32",
+          "left": {
+            "type": "app",
+            "id": "C_JAL",
+            "patterns": [
+              {
+                "type": "vector_concat",
+                "patterns": [
+                  { "type": "id", "id": "i11" },
+                  { "type": "id", "id": "i10" },
+                  { "type": "id", "id": "i98" },
+                  { "type": "id", "id": "i7" },
+                  { "type": "id", "id": "i6" },
+                  { "type": "id", "id": "i5" },
+                  { "type": "id", "id": "i4" },
+                  { "type": "id", "id": "i31" }
+                ]
+              }
+            ]
+          },
+          "right": {
+            "type": "vector_concat",
+            "patterns": [
+              { "type": "literal", "value": "0b001" },
+              { "type": "id", "id": "i11" },
+              { "type": "id", "id": "i4" },
+              { "type": "id", "id": "i98" },
+              { "type": "id", "id": "i10" },
+              { "type": "id", "id": "i6" },
+              { "type": "id", "id": "i7" },
+              { "type": "id", "id": "i31" },
+              { "type": "id", "id": "i5" },
+              { "type": "literal", "value": "0b01" }
+            ]
+          },
+          "right_wavedrom": "{reg:[\n    { bits: 2, name: 0x1, attr: '2', type: 8 },\n    { bits: 1, name: 'i5', attr: '1', type: 2 },\n    { bits: 3, name: 'i31', attr: '3', type: 2 },\n    { bits: 1, name: 'i7', attr: '1', type: 2 },\n    { bits: 1, name: 'i6', attr: '1', type: 2 },\n    { bits: 1, name: 'i10', attr: '1', type: 2 },\n    { bits: 2, name: 'i98', attr: '2', type: 2 },\n    { bits: 1, name: 'i4', attr: '1', type: 2 },\n    { bits: 1, name: 'i11', attr: '1', type: 2 },\n    { bits: 3, name: 0x1, attr: '3', type: 8 }\n]}"
+        },
+        {
+          "number": 8,
+          "source": "mapping clause encdec_compressed = C_ADDIW(imm5 @ imm40, rsd)\n      if rsd != zreg & sizeof(xlen) == 64\n  <-> 0b001 @ imm5 : bits(1) @ rsd : regidx @ imm40 : bits(5) @ 0b01\n      if rsd != zreg & sizeof(xlen) == 64",
+          "left": {
+            "type": "app",
+            "id": "C_ADDIW",
+            "patterns": [
+              {
+                "type": "vector_concat",
+                "patterns": [
+                  { "type": "id", "id": "imm5" },
+                  { "type": "id", "id": "imm40" }
+                ]
+              },
+              { "type": "id", "id": "rsd" }
+            ]
+          },
+          "right": {
+            "type": "vector_concat",
+            "patterns": [
+              { "type": "literal", "value": "0b001" },
+              { "type": "id", "id": "imm5" },
+              { "type": "id", "id": "rsd" },
+              { "type": "id", "id": "imm40" },
+              { "type": "literal", "value": "0b01" }
+            ]
+          },
+          "right_wavedrom": "{reg:[\n    { bits: 2, name: 0x1, attr: '2', type: 8 },\n    { bits: 5, name: 'imm40', attr: '5', type: 6 },\n    { bits: 5, name: 'rsd', attr: '5', type: 2 },\n    { bits: 1, name: 'imm5', attr: '1', type: 6 },\n    { bits: 3, name: 0x1, attr: '3', type: 8 }\n]}"
+        },
+        {
+          "number": 9,
+          "source": "mapping clause encdec_compressed = C_LI(imm5 @ imm40, rd)\n      if rd != zreg\n  <-> 0b010 @ imm5 : bits(1) @ rd : regidx @ imm40 : bits(5) @ 0b01\n      if rd != zreg",
+          "left": {
+            "type": "app",
+            "id": "C_LI",
+            "patterns": [
+              {
+                "type": "vector_concat",
+                "patterns": [
+                  { "type": "id", "id": "imm5" },
+                  { "type": "id", "id": "imm40" }
+                ]
+              },
+              { "type": "id", "id": "rd" }
+            ]
+          },
+          "right": {
+            "type": "vector_concat",
+            "patterns": [
+              { "type": "literal", "value": "0b010" },
+              { "type": "id", "id": "imm5" },
+              { "type": "id", "id": "rd" },
+              { "type": "id", "id": "imm40" },
+              { "type": "literal", "value": "0b01" }
+            ]
+          },
+          "right_wavedrom": "{reg:[\n    { bits: 2, name: 0x1, attr: '2', type: 8 },\n    { bits: 5, name: 'imm40', attr: '5', type: 6 },\n    { bits: 5, name: 'rd', attr: '5', type: 2 },\n    { bits: 1, name: 'imm5', attr: '1', type: 6 },\n    { bits: 3, name: 0x2, attr: '3', type: 8 }\n]}"
+        },
+        {
+          "number": 10,
+          "source": "mapping clause encdec_compressed = C_ADDI16SP(nzi9 @ nzi87 @ nzi6 @ nzi5 @ nzi4)\n      if nzi9 @ nzi87 @ nzi6 @ nzi5 @ nzi4 != 0b000000\n  <-> 0b011 @ nzi9 : bits(1) @ /* x2 */ 0b00010 @ nzi4 : bits(1) @ nzi6 : bits(1) @ nzi87 : bits(2) @ nzi5 : bits(1) @ 0b01\n      if nzi9 @ nzi87 @ nzi6 @ nzi5 @ nzi4 != 0b000000",
+          "left": {
+            "type": "app",
+            "id": "C_ADDI16SP",
+            "patterns": [
+              {
+                "type": "vector_concat",
+                "patterns": [
+                  { "type": "id", "id": "nzi9" },
+                  { "type": "id", "id": "nzi87" },
+                  { "type": "id", "id": "nzi6" },
+                  { "type": "id", "id": "nzi5" },
+                  { "type": "id", "id": "nzi4" }
+                ]
+              }
+            ]
+          },
+          "right": {
+            "type": "vector_concat",
+            "patterns": [
+              { "type": "literal", "value": "0b011" },
+              { "type": "id", "id": "nzi9" },
+              { "type": "literal", "value": "0b00010" },
+              { "type": "id", "id": "nzi4" },
+              { "type": "id", "id": "nzi6" },
+              { "type": "id", "id": "nzi87" },
+              { "type": "id", "id": "nzi5" },
+              { "type": "literal", "value": "0b01" }
+            ]
+          },
+          "right_wavedrom": "{reg:[\n    { bits: 2, name: 0x1, attr: '2', type: 8 },\n    { bits: 1, name: 'nzi5', attr: '1', type: 2 },\n    { bits: 2, name: 'nzi87', attr: '2', type: 2 },\n    { bits: 1, name: 'nzi6', attr: '1', type: 2 },\n    { bits: 1, name: 'nzi4', attr: '1', type: 2 },\n    { bits: 5, name: 0x02, attr: '5', type: 8 },\n    { bits: 1, name: 'nzi9', attr: '1', type: 2 },\n    { bits: 3, name: 0x3, attr: '3', type: 8 }\n]}"
+        },
+        {
+          "number": 11,
+          "source": "mapping clause encdec_compressed = C_LUI(imm17 @ imm1612, rd)\n      if rd != zreg & rd != sp & imm17 @ imm1612 != 0b000000\n  <-> 0b011 @ imm17 : bits(1) @ rd : regidx @ imm1612 : bits(5) @ 0b01\n      if rd != zreg & rd != sp & imm17 @ imm1612 != 0b000000",
+          "left": {
+            "type": "app",
+            "id": "C_LUI",
+            "patterns": [
+              {
+                "type": "vector_concat",
+                "patterns": [
+                  { "type": "id", "id": "imm17" },
+                  { "type": "id", "id": "imm1612" }
+                ]
+              },
+              { "type": "id", "id": "rd" }
+            ]
+          },
+          "right": {
+            "type": "vector_concat",
+            "patterns": [
+              { "type": "literal", "value": "0b011" },
+              { "type": "id", "id": "imm17" },
+              { "type": "id", "id": "rd" },
+              { "type": "id", "id": "imm1612" },
+              { "type": "literal", "value": "0b01" }
+            ]
+          },
+          "right_wavedrom": "{reg:[\n    { bits: 2, name: 0x1, attr: '2', type: 8 },\n    { bits: 5, name: 'imm1612', attr: '5', type: 6 },\n    { bits: 5, name: 'rd', attr: '5', type: 2 },\n    { bits: 1, name: 'imm17', attr: '1', type: 6 },\n    { bits: 3, name: 0x3, attr: '3', type: 8 }\n]}"
+        },
+        {
+          "number": 12,
+          "source": "mapping clause encdec_compressed = C_SRLI(nzui5 @ nzui40, rsd)\n      if nzui5 @ nzui40 != 0b000000\n  <-> 0b100 @ nzui5 : bits(1) @ 0b00 @ rsd : cregidx @ nzui40 : bits(5) @ 0b01\n      if nzui5 @ nzui40 != 0b000000",
+          "left": {
+            "type": "app",
+            "id": "C_SRLI",
+            "patterns": [
+              {
+                "type": "vector_concat",
+                "patterns": [
+                  { "type": "id", "id": "nzui5" },
+                  { "type": "id", "id": "nzui40" }
+                ]
+              },
+              { "type": "id", "id": "rsd" }
+            ]
+          },
+          "right": {
+            "type": "vector_concat",
+            "patterns": [
+              { "type": "literal", "value": "0b100" },
+              { "type": "id", "id": "nzui5" },
+              { "type": "literal", "value": "0b00" },
+              { "type": "id", "id": "rsd" },
+              { "type": "id", "id": "nzui40" },
+              { "type": "literal", "value": "0b01" }
+            ]
+          },
+          "right_wavedrom": "{reg:[\n    { bits: 2, name: 0x1, attr: '2', type: 8 },\n    { bits: 5, name: 'nzui40', attr: '5', type: 2 },\n    { bits: 3, name: 'rsd', attr: '3', type: 2 },\n    { bits: 2, name: 0x0, attr: '2', type: 8 },\n    { bits: 1, name: 'nzui5', attr: '1', type: 2 },\n    { bits: 3, name: 0x4, attr: '3', type: 8 }\n]}"
+        },
+        {
+          "number": 13,
+          "source": "mapping clause encdec_compressed = C_SRAI(nzui5 @ nzui40, rsd)\n      if nzui5 @ nzui40 != 0b000000\n  <-> 0b100 @ nzui5 : bits(1) @ 0b01 @ rsd : cregidx @ nzui40 : bits(5) @ 0b01\n      if nzui5 @ nzui40 != 0b000000",
+          "left": {
+            "type": "app",
+            "id": "C_SRAI",
+            "patterns": [
+              {
+                "type": "vector_concat",
+                "patterns": [
+                  { "type": "id", "id": "nzui5" },
+                  { "type": "id", "id": "nzui40" }
+                ]
+              },
+              { "type": "id", "id": "rsd" }
+            ]
+          },
+          "right": {
+            "type": "vector_concat",
+            "patterns": [
+              { "type": "literal", "value": "0b100" },
+              { "type": "id", "id": "nzui5" },
+              { "type": "literal", "value": "0b01" },
+              { "type": "id", "id": "rsd" },
+              { "type": "id", "id": "nzui40" },
+              { "type": "literal", "value": "0b01" }
+            ]
+          },
+          "right_wavedrom": "{reg:[\n    { bits: 2, name: 0x1, attr: '2', type: 8 },\n    { bits: 5, name: 'nzui40', attr: '5', type: 2 },\n    { bits: 3, name: 'rsd', attr: '3', type: 2 },\n    { bits: 2, name: 0x1, attr: '2', type: 8 },\n    { bits: 1, name: 'nzui5', attr: '1', type: 2 },\n    { bits: 3, name: 0x4, attr: '3', type: 8 }\n]}"
+        },
+        {
+          "number": 14,
+          "source": "mapping clause encdec_compressed = C_ANDI(i5 @ i40, rsd)\n  <-> 0b100 @ i5 : bits(1) @ 0b10 @ rsd : cregidx @ i40 : bits(5) @ 0b01",
+          "left": {
+            "type": "app",
+            "id": "C_ANDI",
+            "patterns": [
+              {
+                "type": "vector_concat",
+                "patterns": [
+                  { "type": "id", "id": "i5" }, { "type": "id", "id": "i40" }
+                ]
+              },
+              { "type": "id", "id": "rsd" }
+            ]
+          },
+          "right": {
+            "type": "vector_concat",
+            "patterns": [
+              { "type": "literal", "value": "0b100" },
+              { "type": "id", "id": "i5" },
+              { "type": "literal", "value": "0b10" },
+              { "type": "id", "id": "rsd" },
+              { "type": "id", "id": "i40" },
+              { "type": "literal", "value": "0b01" }
+            ]
+          },
+          "right_wavedrom": "{reg:[\n    { bits: 2, name: 0x1, attr: '2', type: 8 },\n    { bits: 5, name: 'i40', attr: '5', type: 2 },\n    { bits: 3, name: 'rsd', attr: '3', type: 2 },\n    { bits: 2, name: 0x2, attr: '2', type: 8 },\n    { bits: 1, name: 'i5', attr: '1', type: 2 },\n    { bits: 3, name: 0x4, attr: '3', type: 8 }\n]}"
+        },
+        {
+          "number": 15,
+          "source": "mapping clause encdec_compressed = C_SUB(rsd, rs2)\n  <-> 0b100 @ 0b0 @ 0b11 @ rsd : cregidx @ 0b00 @ rs2 : cregidx @ 0b01",
+          "left": {
+            "type": "app",
+            "id": "C_SUB",
+            "patterns": [
+              { "type": "id", "id": "rsd" }, { "type": "id", "id": "rs2" }
+            ]
+          },
+          "right": {
+            "type": "vector_concat",
+            "patterns": [
+              { "type": "literal", "value": "0b100" },
+              { "type": "literal", "value": "0b0" },
+              { "type": "literal", "value": "0b11" },
+              { "type": "id", "id": "rsd" },
+              { "type": "literal", "value": "0b00" },
+              { "type": "id", "id": "rs2" },
+              { "type": "literal", "value": "0b01" }
+            ]
+          },
+          "right_wavedrom": "{reg:[\n    { bits: 2, name: 0x1, attr: '2', type: 8 },\n    { bits: 3, name: 'rs2', attr: '3', type: 2 },\n    { bits: 2, name: 0x0, attr: '2', type: 8 },\n    { bits: 3, name: 'rsd', attr: '3', type: 2 },\n    { bits: 2, name: 0x3, attr: '2', type: 8 },\n    { bits: 1, name: 0x0, attr: '1', type: 8 },\n    { bits: 3, name: 0x4, attr: '3', type: 8 }\n]}"
+        },
+        {
+          "number": 16,
+          "source": "mapping clause encdec_compressed = C_XOR(rsd, rs2)\n  <-> 0b100 @ 0b0 @ 0b11 @ rsd : cregidx @ 0b01 @ rs2 : cregidx @ 0b01",
+          "left": {
+            "type": "app",
+            "id": "C_XOR",
+            "patterns": [
+              { "type": "id", "id": "rsd" }, { "type": "id", "id": "rs2" }
+            ]
+          },
+          "right": {
+            "type": "vector_concat",
+            "patterns": [
+              { "type": "literal", "value": "0b100" },
+              { "type": "literal", "value": "0b0" },
+              { "type": "literal", "value": "0b11" },
+              { "type": "id", "id": "rsd" },
+              { "type": "literal", "value": "0b01" },
+              { "type": "id", "id": "rs2" },
+              { "type": "literal", "value": "0b01" }
+            ]
+          },
+          "right_wavedrom": "{reg:[\n    { bits: 2, name: 0x1, attr: '2', type: 8 },\n    { bits: 3, name: 'rs2', attr: '3', type: 2 },\n    { bits: 2, name: 0x1, attr: '2', type: 8 },\n    { bits: 3, name: 'rsd', attr: '3', type: 2 },\n    { bits: 2, name: 0x3, attr: '2', type: 8 },\n    { bits: 1, name: 0x0, attr: '1', type: 8 },\n    { bits: 3, name: 0x4, attr: '3', type: 8 }\n]}"
+        },
+        {
+          "number": 17,
+          "source": "mapping clause encdec_compressed = C_OR(rsd, rs2)\n  <-> 0b100 @ 0b0 @ 0b11 @ rsd : cregidx @ 0b10 @ rs2 : cregidx @ 0b01",
+          "left": {
+            "type": "app",
+            "id": "C_OR",
+            "patterns": [
+              { "type": "id", "id": "rsd" }, { "type": "id", "id": "rs2" }
+            ]
+          },
+          "right": {
+            "type": "vector_concat",
+            "patterns": [
+              { "type": "literal", "value": "0b100" },
+              { "type": "literal", "value": "0b0" },
+              { "type": "literal", "value": "0b11" },
+              { "type": "id", "id": "rsd" },
+              { "type": "literal", "value": "0b10" },
+              { "type": "id", "id": "rs2" },
+              { "type": "literal", "value": "0b01" }
+            ]
+          },
+          "right_wavedrom": "{reg:[\n    { bits: 2, name: 0x1, attr: '2', type: 8 },\n    { bits: 3, name: 'rs2', attr: '3', type: 2 },\n    { bits: 2, name: 0x2, attr: '2', type: 8 },\n    { bits: 3, name: 'rsd', attr: '3', type: 2 },\n    { bits: 2, name: 0x3, attr: '2', type: 8 },\n    { bits: 1, name: 0x0, attr: '1', type: 8 },\n    { bits: 3, name: 0x4, attr: '3', type: 8 }\n]}"
+        },
+        {
+          "number": 18,
+          "source": "mapping clause encdec_compressed = C_AND(rsd, rs2)\n  <-> 0b100 @ 0b0 @ 0b11 @ rsd : cregidx @ 0b11 @ rs2 : cregidx @ 0b01",
+          "left": {
+            "type": "app",
+            "id": "C_AND",
+            "patterns": [
+              { "type": "id", "id": "rsd" }, { "type": "id", "id": "rs2" }
+            ]
+          },
+          "right": {
+            "type": "vector_concat",
+            "patterns": [
+              { "type": "literal", "value": "0b100" },
+              { "type": "literal", "value": "0b0" },
+              { "type": "literal", "value": "0b11" },
+              { "type": "id", "id": "rsd" },
+              { "type": "literal", "value": "0b11" },
+              { "type": "id", "id": "rs2" },
+              { "type": "literal", "value": "0b01" }
+            ]
+          },
+          "right_wavedrom": "{reg:[\n    { bits: 2, name: 0x1, attr: '2', type: 8 },\n    { bits: 3, name: 'rs2', attr: '3', type: 2 },\n    { bits: 2, name: 0x3, attr: '2', type: 8 },\n    { bits: 3, name: 'rsd', attr: '3', type: 2 },\n    { bits: 2, name: 0x3, attr: '2', type: 8 },\n    { bits: 1, name: 0x0, attr: '1', type: 8 },\n    { bits: 3, name: 0x4, attr: '3', type: 8 }\n]}"
+        },
+        {
+          "number": 19,
+          "source": "mapping clause encdec_compressed = C_SUBW(rsd, rs2)\n      if sizeof(xlen) == 64\n  <-> 0b100 @ 0b1 @ 0b11 @ rsd : cregidx @ 0b00 @ rs2 : cregidx @ 0b01\n      if sizeof(xlen) == 64",
+          "left": {
+            "type": "app",
+            "id": "C_SUBW",
+            "patterns": [
+              { "type": "id", "id": "rsd" }, { "type": "id", "id": "rs2" }
+            ]
+          },
+          "right": {
+            "type": "vector_concat",
+            "patterns": [
+              { "type": "literal", "value": "0b100" },
+              { "type": "literal", "value": "0b1" },
+              { "type": "literal", "value": "0b11" },
+              { "type": "id", "id": "rsd" },
+              { "type": "literal", "value": "0b00" },
+              { "type": "id", "id": "rs2" },
+              { "type": "literal", "value": "0b01" }
+            ]
+          },
+          "right_wavedrom": "{reg:[\n    { bits: 2, name: 0x1, attr: '2', type: 8 },\n    { bits: 3, name: 'rs2', attr: '3', type: 2 },\n    { bits: 2, name: 0x0, attr: '2', type: 8 },\n    { bits: 3, name: 'rsd', attr: '3', type: 2 },\n    { bits: 2, name: 0x3, attr: '2', type: 8 },\n    { bits: 1, name: 0x1, attr: '1', type: 8 },\n    { bits: 3, name: 0x4, attr: '3', type: 8 }\n]}"
+        },
+        {
+          "number": 20,
+          "source": "mapping clause encdec_compressed = C_ADDW(rsd, rs2)\n      if sizeof(xlen) == 64\n  <-> 0b100 @ 0b1 @ 0b11 @ rsd : cregidx @ 0b01 @ rs2 : cregidx @ 0b01\n      if sizeof(xlen) == 64",
+          "left": {
+            "type": "app",
+            "id": "C_ADDW",
+            "patterns": [
+              { "type": "id", "id": "rsd" }, { "type": "id", "id": "rs2" }
+            ]
+          },
+          "right": {
+            "type": "vector_concat",
+            "patterns": [
+              { "type": "literal", "value": "0b100" },
+              { "type": "literal", "value": "0b1" },
+              { "type": "literal", "value": "0b11" },
+              { "type": "id", "id": "rsd" },
+              { "type": "literal", "value": "0b01" },
+              { "type": "id", "id": "rs2" },
+              { "type": "literal", "value": "0b01" }
+            ]
+          },
+          "right_wavedrom": "{reg:[\n    { bits: 2, name: 0x1, attr: '2', type: 8 },\n    { bits: 3, name: 'rs2', attr: '3', type: 2 },\n    { bits: 2, name: 0x1, attr: '2', type: 8 },\n    { bits: 3, name: 'rsd', attr: '3', type: 2 },\n    { bits: 2, name: 0x3, attr: '2', type: 8 },\n    { bits: 1, name: 0x1, attr: '1', type: 8 },\n    { bits: 3, name: 0x4, attr: '3', type: 8 }\n]}"
+        },
+        {
+          "number": 21,
+          "source": "mapping clause encdec_compressed = C_J(i11 @ i10 @ i98 @ i7 @ i6 @ i5 @ i4 @ i31)\n  <-> 0b101 @ i11 : bits(1) @ i4 : bits(1) @ i98 : bits(2) @ i10 : bits(1) @ i6 : bits(1) @ i7 : bits(1) @ i31 : bits(3) @ i5 : bits(1) @ 0b01",
+          "left": {
+            "type": "app",
+            "id": "C_J",
+            "patterns": [
+              {
+                "type": "vector_concat",
+                "patterns": [
+                  { "type": "id", "id": "i11" },
+                  { "type": "id", "id": "i10" },
+                  { "type": "id", "id": "i98" },
+                  { "type": "id", "id": "i7" },
+                  { "type": "id", "id": "i6" },
+                  { "type": "id", "id": "i5" },
+                  { "type": "id", "id": "i4" },
+                  { "type": "id", "id": "i31" }
+                ]
+              }
+            ]
+          },
+          "right": {
+            "type": "vector_concat",
+            "patterns": [
+              { "type": "literal", "value": "0b101" },
+              { "type": "id", "id": "i11" },
+              { "type": "id", "id": "i4" },
+              { "type": "id", "id": "i98" },
+              { "type": "id", "id": "i10" },
+              { "type": "id", "id": "i6" },
+              { "type": "id", "id": "i7" },
+              { "type": "id", "id": "i31" },
+              { "type": "id", "id": "i5" },
+              { "type": "literal", "value": "0b01" }
+            ]
+          },
+          "right_wavedrom": "{reg:[\n    { bits: 2, name: 0x1, attr: '2', type: 8 },\n    { bits: 1, name: 'i5', attr: '1', type: 2 },\n    { bits: 3, name: 'i31', attr: '3', type: 2 },\n    { bits: 1, name: 'i7', attr: '1', type: 2 },\n    { bits: 1, name: 'i6', attr: '1', type: 2 },\n    { bits: 1, name: 'i10', attr: '1', type: 2 },\n    { bits: 2, name: 'i98', attr: '2', type: 2 },\n    { bits: 1, name: 'i4', attr: '1', type: 2 },\n    { bits: 1, name: 'i11', attr: '1', type: 2 },\n    { bits: 3, name: 0x5, attr: '3', type: 8 }\n]}"
+        },
+        {
+          "number": 22,
+          "source": "mapping clause encdec_compressed = C_BEQZ(i8 @ i76 @ i5 @ i43 @ i21, rs)\n  <-> 0b110 @ i8 : bits(1) @ i43 : bits(2) @ rs : cregidx @ i76 : bits(2) @ i21 : bits(2) @ i5 : bits(1) @ 0b01",
+          "left": {
+            "type": "app",
+            "id": "C_BEQZ",
+            "patterns": [
+              {
+                "type": "vector_concat",
+                "patterns": [
+                  { "type": "id", "id": "i8" },
+                  { "type": "id", "id": "i76" },
+                  { "type": "id", "id": "i5" },
+                  { "type": "id", "id": "i43" },
+                  { "type": "id", "id": "i21" }
+                ]
+              },
+              { "type": "id", "id": "rs" }
+            ]
+          },
+          "right": {
+            "type": "vector_concat",
+            "patterns": [
+              { "type": "literal", "value": "0b110" },
+              { "type": "id", "id": "i8" },
+              { "type": "id", "id": "i43" },
+              { "type": "id", "id": "rs" },
+              { "type": "id", "id": "i76" },
+              { "type": "id", "id": "i21" },
+              { "type": "id", "id": "i5" },
+              { "type": "literal", "value": "0b01" }
+            ]
+          },
+          "right_wavedrom": "{reg:[\n    { bits: 2, name: 0x1, attr: '2', type: 8 },\n    { bits: 1, name: 'i5', attr: '1', type: 2 },\n    { bits: 2, name: 'i21', attr: '2', type: 2 },\n    { bits: 2, name: 'i76', attr: '2', type: 2 },\n    { bits: 3, name: 'rs', attr: '3', type: 2 },\n    { bits: 2, name: 'i43', attr: '2', type: 2 },\n    { bits: 1, name: 'i8', attr: '1', type: 2 },\n    { bits: 3, name: 0x6, attr: '3', type: 8 }\n]}"
+        },
+        {
+          "number": 23,
+          "source": "mapping clause encdec_compressed = C_BNEZ(i8 @ i76 @ i5 @ i43 @ i21, rs)\n  <-> 0b111 @ i8 : bits(1) @ i43 : bits(2) @ rs : cregidx @ i76 : bits(2) @ i21 : bits(2) @ i5 : bits(1) @ 0b01",
+          "left": {
+            "type": "app",
+            "id": "C_BNEZ",
+            "patterns": [
+              {
+                "type": "vector_concat",
+                "patterns": [
+                  { "type": "id", "id": "i8" },
+                  { "type": "id", "id": "i76" },
+                  { "type": "id", "id": "i5" },
+                  { "type": "id", "id": "i43" },
+                  { "type": "id", "id": "i21" }
+                ]
+              },
+              { "type": "id", "id": "rs" }
+            ]
+          },
+          "right": {
+            "type": "vector_concat",
+            "patterns": [
+              { "type": "literal", "value": "0b111" },
+              { "type": "id", "id": "i8" },
+              { "type": "id", "id": "i43" },
+              { "type": "id", "id": "rs" },
+              { "type": "id", "id": "i76" },
+              { "type": "id", "id": "i21" },
+              { "type": "id", "id": "i5" },
+              { "type": "literal", "value": "0b01" }
+            ]
+          },
+          "right_wavedrom": "{reg:[\n    { bits: 2, name: 0x1, attr: '2', type: 8 },\n    { bits: 1, name: 'i5', attr: '1', type: 2 },\n    { bits: 2, name: 'i21', attr: '2', type: 2 },\n    { bits: 2, name: 'i76', attr: '2', type: 2 },\n    { bits: 3, name: 'rs', attr: '3', type: 2 },\n    { bits: 2, name: 'i43', attr: '2', type: 2 },\n    { bits: 1, name: 'i8', attr: '1', type: 2 },\n    { bits: 3, name: 0x7, attr: '3', type: 8 }\n]}"
+        },
+        {
+          "number": 24,
+          "source": "mapping clause encdec_compressed = C_SLLI(nzui5 @ nzui40, rsd)\n      if nzui5 @ nzui40 != 0b000000 & rsd != zreg & (sizeof(xlen) == 64 | nzui5 == 0b0)\n  <-> 0b000 @ nzui5 : bits(1) @ rsd : regidx @ nzui40 : bits(5) @ 0b10\n      if nzui5 @ nzui40 != 0b000000 & rsd != zreg & (sizeof(xlen) == 64 | nzui5 == 0b0)",
+          "left": {
+            "type": "app",
+            "id": "C_SLLI",
+            "patterns": [
+              {
+                "type": "vector_concat",
+                "patterns": [
+                  { "type": "id", "id": "nzui5" },
+                  { "type": "id", "id": "nzui40" }
+                ]
+              },
+              { "type": "id", "id": "rsd" }
+            ]
+          },
+          "right": {
+            "type": "vector_concat",
+            "patterns": [
+              { "type": "literal", "value": "0b000" },
+              { "type": "id", "id": "nzui5" },
+              { "type": "id", "id": "rsd" },
+              { "type": "id", "id": "nzui40" },
+              { "type": "literal", "value": "0b10" }
+            ]
+          },
+          "right_wavedrom": "{reg:[\n    { bits: 2, name: 0x2, attr: '2', type: 8 },\n    { bits: 5, name: 'nzui40', attr: '5', type: 2 },\n    { bits: 5, name: 'rsd', attr: '5', type: 2 },\n    { bits: 1, name: 'nzui5', attr: '1', type: 2 },\n    { bits: 3, name: 0x0, attr: '3', type: 8 }\n]}"
+        },
+        {
+          "number": 25,
+          "source": "mapping clause encdec_compressed = C_LWSP(ui76 @ ui5 @ ui42, rd)\n      if rd != zreg\n  <-> 0b010 @ ui5 : bits(1) @ rd : regidx @ ui42 : bits(3) @ ui76 : bits(2) @ 0b10\n      if rd != zreg",
+          "left": {
+            "type": "app",
+            "id": "C_LWSP",
+            "patterns": [
+              {
+                "type": "vector_concat",
+                "patterns": [
+                  { "type": "id", "id": "ui76" },
+                  { "type": "id", "id": "ui5" },
+                  { "type": "id", "id": "ui42" }
+                ]
+              },
+              { "type": "id", "id": "rd" }
+            ]
+          },
+          "right": {
+            "type": "vector_concat",
+            "patterns": [
+              { "type": "literal", "value": "0b010" },
+              { "type": "id", "id": "ui5" },
+              { "type": "id", "id": "rd" },
+              { "type": "id", "id": "ui42" },
+              { "type": "id", "id": "ui76" },
+              { "type": "literal", "value": "0b10" }
+            ]
+          },
+          "right_wavedrom": "{reg:[\n    { bits: 2, name: 0x2, attr: '2', type: 8 },\n    { bits: 2, name: 'ui76', attr: '2', type: 2 },\n    { bits: 3, name: 'ui42', attr: '3', type: 2 },\n    { bits: 5, name: 'rd', attr: '5', type: 2 },\n    { bits: 1, name: 'ui5', attr: '1', type: 2 },\n    { bits: 3, name: 0x2, attr: '3', type: 8 }\n]}"
+        },
+        {
+          "number": 26,
+          "source": "mapping clause encdec_compressed = C_LDSP(ui86 @ ui5 @ ui43, rd)\n      if rd != zreg & (sizeof(xlen) == 64 | haveZcmlsd())\n  <-> 0b011 @ ui5 : bits(1) @ rd : regidx @ ui43 : bits(2) @ ui86 : bits(3) @ 0b10\n      if rd != zreg & (sizeof(xlen) == 64 | haveZcmlsd())",
+          "left": {
+            "type": "app",
+            "id": "C_LDSP",
+            "patterns": [
+              {
+                "type": "vector_concat",
+                "patterns": [
+                  { "type": "id", "id": "ui86" },
+                  { "type": "id", "id": "ui5" },
+                  { "type": "id", "id": "ui43" }
+                ]
+              },
+              { "type": "id", "id": "rd" }
+            ]
+          },
+          "right": {
+            "type": "vector_concat",
+            "patterns": [
+              { "type": "literal", "value": "0b011" },
+              { "type": "id", "id": "ui5" },
+              { "type": "id", "id": "rd" },
+              { "type": "id", "id": "ui43" },
+              { "type": "id", "id": "ui86" },
+              { "type": "literal", "value": "0b10" }
+            ]
+          },
+          "right_wavedrom": "{reg:[\n    { bits: 2, name: 0x2, attr: '2', type: 8 },\n    { bits: 3, name: 'ui86', attr: '3', type: 2 },\n    { bits: 2, name: 'ui43', attr: '2', type: 2 },\n    { bits: 5, name: 'rd', attr: '5', type: 2 },\n    { bits: 1, name: 'ui5', attr: '1', type: 2 },\n    { bits: 3, name: 0x3, attr: '3', type: 8 }\n]}"
+        },
+        {
+          "number": 27,
+          "source": "mapping clause encdec_compressed = C_SWSP(ui76 @ ui52, rs2)\n  <-> 0b110 @ ui52 : bits(4) @ ui76 : bits(2) @ rs2 : regidx @ 0b10",
+          "left": {
+            "type": "app",
+            "id": "C_SWSP",
+            "patterns": [
+              {
+                "type": "vector_concat",
+                "patterns": [
+                  { "type": "id", "id": "ui76" },
+                  { "type": "id", "id": "ui52" }
+                ]
+              },
+              { "type": "id", "id": "rs2" }
+            ]
+          },
+          "right": {
+            "type": "vector_concat",
+            "patterns": [
+              { "type": "literal", "value": "0b110" },
+              { "type": "id", "id": "ui52" },
+              { "type": "id", "id": "ui76" },
+              { "type": "id", "id": "rs2" },
+              { "type": "literal", "value": "0b10" }
+            ]
+          },
+          "right_wavedrom": "{reg:[\n    { bits: 2, name: 0x2, attr: '2', type: 8 },\n    { bits: 5, name: 'rs2', attr: '5', type: 2 },\n    { bits: 2, name: 'ui76', attr: '2', type: 2 },\n    { bits: 4, name: 'ui52', attr: '4', type: 2 },\n    { bits: 3, name: 0x6, attr: '3', type: 8 }\n]}"
+        },
+        {
+          "number": 28,
+          "source": "mapping clause encdec_compressed = C_SDSP(ui86 @ ui53, rs2)\n      if sizeof(xlen) == 64 | haveZcmlsd()\n  <-> 0b111 @ ui53 : bits(3) @ ui86 : bits(3) @ rs2 : regidx @ 0b10\n      if sizeof(xlen) == 64 | haveZcmlsd()",
+          "left": {
+            "type": "app",
+            "id": "C_SDSP",
+            "patterns": [
+              {
+                "type": "vector_concat",
+                "patterns": [
+                  { "type": "id", "id": "ui86" },
+                  { "type": "id", "id": "ui53" }
+                ]
+              },
+              { "type": "id", "id": "rs2" }
+            ]
+          },
+          "right": {
+            "type": "vector_concat",
+            "patterns": [
+              { "type": "literal", "value": "0b111" },
+              { "type": "id", "id": "ui53" },
+              { "type": "id", "id": "ui86" },
+              { "type": "id", "id": "rs2" },
+              { "type": "literal", "value": "0b10" }
+            ]
+          },
+          "right_wavedrom": "{reg:[\n    { bits: 2, name: 0x2, attr: '2', type: 8 },\n    { bits: 5, name: 'rs2', attr: '5', type: 2 },\n    { bits: 3, name: 'ui86', attr: '3', type: 2 },\n    { bits: 3, name: 'ui53', attr: '3', type: 2 },\n    { bits: 3, name: 0x7, attr: '3', type: 8 }\n]}"
+        },
+        {
+          "number": 29,
+          "source": "mapping clause encdec_compressed = C_JR(rs1)\n      if rs1 != zreg\n  <-> 0b100 @ 0b0 @ rs1 : regidx @ 0b00000 @ 0b10\n      if rs1 != zreg",
+          "left": {
+            "type": "app",
+            "id": "C_JR",
+            "patterns": [ { "type": "id", "id": "rs1" } ]
+          },
+          "right": {
+            "type": "vector_concat",
+            "patterns": [
+              { "type": "literal", "value": "0b100" },
+              { "type": "literal", "value": "0b0" },
+              { "type": "id", "id": "rs1" },
+              { "type": "literal", "value": "0b00000" },
+              { "type": "literal", "value": "0b10" }
+            ]
+          },
+          "right_wavedrom": "{reg:[\n    { bits: 2, name: 0x2, attr: '2', type: 8 },\n    { bits: 5, name: 0x00, attr: '5', type: 8 },\n    { bits: 5, name: 'rs1', attr: '5', type: 2 },\n    { bits: 1, name: 0x0, attr: '1', type: 8 },\n    { bits: 3, name: 0x4, attr: '3', type: 8 }\n]}"
+        },
+        {
+          "number": 30,
+          "source": "mapping clause encdec_compressed = C_JALR(rs1)\n      if rs1 != zreg\n  <-> 0b100 @ 0b1 @ rs1 : regidx @ 0b00000 @ 0b10\n      if rs1 != zreg",
+          "left": {
+            "type": "app",
+            "id": "C_JALR",
+            "patterns": [ { "type": "id", "id": "rs1" } ]
+          },
+          "right": {
+            "type": "vector_concat",
+            "patterns": [
+              { "type": "literal", "value": "0b100" },
+              { "type": "literal", "value": "0b1" },
+              { "type": "id", "id": "rs1" },
+              { "type": "literal", "value": "0b00000" },
+              { "type": "literal", "value": "0b10" }
+            ]
+          },
+          "right_wavedrom": "{reg:[\n    { bits: 2, name: 0x2, attr: '2', type: 8 },\n    { bits: 5, name: 0x00, attr: '5', type: 8 },\n    { bits: 5, name: 'rs1', attr: '5', type: 2 },\n    { bits: 1, name: 0x1, attr: '1', type: 8 },\n    { bits: 3, name: 0x4, attr: '3', type: 8 }\n]}"
+        },
+        {
+          "number": 31,
+          "source": "mapping clause encdec_compressed = C_MV(rd, rs2)\n      if rd != zreg & rs2 != zreg\n  <-> 0b100 @ 0b0 @ rd : regidx @ rs2 : regidx @ 0b10\n      if rd != zreg & rs2 != zreg",
+          "left": {
+            "type": "app",
+            "id": "C_MV",
+            "patterns": [
+              { "type": "id", "id": "rd" }, { "type": "id", "id": "rs2" }
+            ]
+          },
+          "right": {
+            "type": "vector_concat",
+            "patterns": [
+              { "type": "literal", "value": "0b100" },
+              { "type": "literal", "value": "0b0" },
+              { "type": "id", "id": "rd" },
+              { "type": "id", "id": "rs2" },
+              { "type": "literal", "value": "0b10" }
+            ]
+          },
+          "right_wavedrom": "{reg:[\n    { bits: 2, name: 0x2, attr: '2', type: 8 },\n    { bits: 5, name: 'rs2', attr: '5', type: 2 },\n    { bits: 5, name: 'rd', attr: '5', type: 2 },\n    { bits: 1, name: 0x0, attr: '1', type: 8 },\n    { bits: 3, name: 0x4, attr: '3', type: 8 }\n]}"
+        },
+        {
+          "number": 32,
+          "source": "mapping clause encdec_compressed = C_EBREAK()\n  <-> 0b100 @ 0b1 @ 0b00000 @ 0b00000 @ 0b10",
+          "left": {
+            "type": "app",
+            "id": "C_EBREAK",
+            "patterns": [ { "type": "literal", "value": "()" } ]
+          },
+          "right": {
+            "type": "vector_concat",
+            "patterns": [
+              { "type": "literal", "value": "0b100" },
+              { "type": "literal", "value": "0b1" },
+              { "type": "literal", "value": "0b00000" },
+              { "type": "literal", "value": "0b00000" },
+              { "type": "literal", "value": "0b10" }
+            ]
+          },
+          "right_wavedrom": "{reg:[\n    { bits: 2, name: 0x2, attr: '2', type: 8 },\n    { bits: 5, name: 0x00, attr: '5', type: 8 },\n    { bits: 5, name: 0x00, attr: '5', type: 8 },\n    { bits: 1, name: 0x1, attr: '1', type: 8 },\n    { bits: 3, name: 0x4, attr: '3', type: 8 }\n]}"
+        },
+        {
+          "number": 33,
+          "source": "mapping clause encdec_compressed = C_ADD(rsd, rs2)\n      if rsd != zreg & rs2 != zreg\n  <-> 0b100 @ 0b1 @ rsd : regidx @ rs2 : regidx @ 0b10\n      if rsd != zreg & rs2 != zreg",
+          "left": {
+            "type": "app",
+            "id": "C_ADD",
+            "patterns": [
+              { "type": "id", "id": "rsd" }, { "type": "id", "id": "rs2" }
+            ]
+          },
+          "right": {
+            "type": "vector_concat",
+            "patterns": [
+              { "type": "literal", "value": "0b100" },
+              { "type": "literal", "value": "0b1" },
+              { "type": "id", "id": "rsd" },
+              { "type": "id", "id": "rs2" },
+              { "type": "literal", "value": "0b10" }
+            ]
+          },
+          "right_wavedrom": "{reg:[\n    { bits: 2, name: 0x2, attr: '2', type: 8 },\n    { bits: 5, name: 'rs2', attr: '5', type: 2 },\n    { bits: 5, name: 'rsd', attr: '5', type: 2 },\n    { bits: 1, name: 0x1, attr: '1', type: 8 },\n    { bits: 3, name: 0x4, attr: '3', type: 8 }\n]}"
+        }
+      ]
+    }
+  },
+  "vals": {},
+  "types": {},
+  "registers": {},
+  "lets": {},
+  "anchors": {},
+  "spans": {}
+}
